@@ -1,10 +1,10 @@
 ---
 layout: layouts/base.njk
-title: About
+title: 关于
 templateClass: tmpl-post
 eleventyNavigation:
-  key: About
-  order: 3
+  key: 关于
+  order: 5
 ---
 
 随便写写, 关于历史, 音乐, 技术

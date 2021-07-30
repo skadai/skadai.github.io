@@ -1,12 +1,23 @@
 ---
 layout: layouts/base.njk
-title: History
+title: 历史
 templateClass: tmpl-post
 eleventyNavigation:
-  key: History
+  key: 历史
   order: 2
 ---
 
-## history articles
 
-> 132年, 搜索
+<div>
+
+
+<ul>
+   {%- for page in collections.history -%}
+    <li>
+      <a href="{{ page.url }}">{{ page.data.title }}</a>
+    </li>
+  {%- endfor -%}
+
+</ul>
+
+ </div>
