@@ -3,42 +3,40 @@
 	<title>长安路</title>
 	<subtitle>Subtitle. Update me.</subtitle>
 	
-	<link href="https://update-me.com/feed/feed.xml" rel="self"/>
-	<link href="https://update-me.com"/>
+	<link href="https://skadai.github.io/feed/feed.xml" rel="self"/>
+	<link href="https://skadai.github.io"/>
 	<updated>2021-07-30T00:00:00-00:00</updated>
-	<id>https://update-me.com</id>
+	<id>https://skadai.github.io</id>
 	<author>
 		<name>csk</name>
 		<email></email>
 	</author>
 	
 	<entry>
-		<title>001.</title>
-		<link href="https://update-me.com/posts/001/"/>
+		<title>starter</title>
+		<link href="https://skadai.github.io/posts/Starter/"/>
 		<updated>2021-07-30T00:00:00-00:00</updated>
-		<id>https://update-me.com/posts/001/</id>
+		<id>https://skadai.github.io/posts/Starter/</id>
 		<content type="html">
 		  &lt;p&gt;定风波&lt;/p&gt;
 &lt;p&gt;苏轼&lt;/p&gt;
+&lt;blockquote&gt;
 &lt;p&gt;三月七日，沙湖道中遇雨。雨具先去，同行皆狼狈，余独不觉，已而遂晴，故作此词。&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;莫听穿林打叶声，何妨吟啸且徐行。&lt;/p&gt;
 &lt;p&gt;竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。&lt;/p&gt;
 &lt;p&gt;料峭春风吹酒醒，微冷，山头斜照却相迎。&lt;/p&gt;
 &lt;p&gt;回首向来萧瑟处，归去，也无风雨也无晴&lt;/p&gt;
-
-			
-		</content>
-	</entry>
-	
-	<entry>
-		<title>Starter</title>
-		<link href="https://update-me.com/posts/Starter/"/>
-		<updated>2021-07-30T00:00:00-00:00</updated>
-		<id>https://update-me.com/posts/Starter/</id>
-		<content type="html">
-		  &lt;p&gt;定风波&lt;/p&gt;
-&lt;p&gt;苏轼&lt;/p&gt;
+&lt;blockquote&gt;
 &lt;p&gt;三月七日，沙湖道中遇雨。雨具先去，同行皆狼狈，余独不觉，已而遂晴，故作此词。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;莫听穿林打叶声，何妨吟啸且徐行。&lt;/p&gt;
+&lt;p&gt;竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。&lt;/p&gt;
+&lt;p&gt;料峭春风吹酒醒，微冷，山头斜照却相迎。&lt;/p&gt;
+&lt;p&gt;回首向来萧瑟处，归去，也无风雨也无晴&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;三月七日，沙湖道中遇雨。雨具先去，同行皆狼狈，余独不觉，已而遂晴，故作此词。&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;莫听穿林打叶声，何妨吟啸且徐行。&lt;/p&gt;
 &lt;p&gt;竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。&lt;/p&gt;
 &lt;p&gt;料峭春风吹酒醒，微冷，山头斜照却相迎。&lt;/p&gt;
