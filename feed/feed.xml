@@ -5,7 +5,7 @@
 	
 	<link href="https://skadai.github.io/feed/feed.xml" rel="self"/>
 	<link href="https://skadai.github.io"/>
-	<updated>2021-07-30T00:00:00-00:00</updated>
+	<updated>2021-07-31T00:00:00-00:00</updated>
 	<id>https://skadai.github.io</id>
 	<author>
 		<name>sk</name>
@@ -27,6 +27,65 @@
 &lt;p&gt;竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。&lt;/p&gt;
 &lt;p&gt;料峭春风吹酒醒，微冷，山头斜照却相迎。&lt;/p&gt;
 &lt;p&gt;回首向来萧瑟处，归去，也无风雨也无晴&lt;/p&gt;
+
+			
+		</content>
+	</entry>
+	
+	<entry>
+		<title>如何部署11ty到github page</title>
+		<link href="https://skadai.github.io/posts/deploy_11ty_in_github-page/"/>
+		<updated>2021-07-31T00:00:00-00:00</updated>
+		<id>https://skadai.github.io/posts/deploy_11ty_in_github-page/</id>
+		<content type="html">
+		  &lt;h4 id=&quot;%E6%B5%81%E7%A8%8B&quot;&gt;流程 &lt;a class=&quot;direct-link&quot; href=&quot;#%E6%B5%81%E7%A8%8B&quot;&gt;#&lt;/a&gt;&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;下载11ty 模板 &lt;a href=&quot;https://github.com/google/eleventy-high-performance-blog&quot;&gt;https://github.com/google/eleventy-high-performance-blog&lt;/a&gt;, 按照提示构建自己的本地博客&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;新增 .nojekyll 文件, 此文件用来告知 github-page 不使用 jekyll 以免产生冲突&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;新增你自己的git仓库, 命名为 &amp;lt;username&amp;gt;.github.io&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;利用下面的命令生成一对秘钥&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;    ssh-keygen -t rsa -b &lt;span class=&quot;token number&quot;&gt;4096&lt;/span&gt; -C &lt;span class=&quot;token string&quot;&gt;&quot;&lt;span class=&quot;token variable&quot;&gt;&lt;span class=&quot;token variable&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;git&lt;/span&gt; config user.email&lt;span class=&quot;token variable&quot;&gt;)&lt;/span&gt;&lt;/span&gt;&quot;&lt;/span&gt; -f gh-pages -N &lt;span class=&quot;token string&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;公钥添加到刚刚的仓库 deploy key&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://cdn.glofission.xyz/img/58b01ba0e0ca16a8610e92c1d0d2b661-20210730142442-19f6c1.png&quot; alt=&quot;添加公钥&quot;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;私钥添加到刚刚的仓库 secret&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://cdn.glofission.xyz/img/a99999f7a1731866c320691fcb87e148-20210730142605-2772eb.png&quot; alt=&quot;添加私钥&quot;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&quot;5&quot;&gt;
+&lt;li&gt;在本地项目新增 .github/workflow/build.yml 文件, 添加下面的内容, 主要逻辑是打包静态文件, 并调用预定义的github action 把&lt;br&gt;
+编译好的文件提交到git仓库&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&quot;language-yml&quot;&gt;&lt;code class=&quot;language-yml&quot;&gt;&lt;span class=&quot;token key atrule&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; Eleventy Build&lt;br&gt;&lt;br&gt;&lt;span class=&quot;token key atrule&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;&lt;br&gt;  &lt;span class=&quot;token key atrule&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;&lt;br&gt;    &lt;span class=&quot;token key atrule&quot;&gt;branches&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;&lt;br&gt;      &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; master&lt;br&gt;&lt;br&gt;&lt;span class=&quot;token key atrule&quot;&gt;jobs&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;&lt;br&gt;  &lt;span class=&quot;token key atrule&quot;&gt;deploy&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;&lt;br&gt;    &lt;span class=&quot;token key atrule&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; ubuntu&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;latest&lt;br&gt;    &lt;span class=&quot;token key atrule&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;&lt;br&gt;        &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token key atrule&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; actions/checkout@v2&lt;br&gt;&lt;br&gt;        &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token key atrule&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; Setup Node&lt;br&gt;          &lt;span class=&quot;token key atrule&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; actions/setup&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;node@v1&lt;br&gt;          &lt;span class=&quot;token key atrule&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;&lt;br&gt;            &lt;span class=&quot;token key atrule&quot;&gt;node-version&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;14.x&#39;&lt;/span&gt;&lt;br&gt;&lt;br&gt;        &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token key atrule&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; npm ci&lt;br&gt;&lt;br&gt;        &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token key atrule&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; npm run build&lt;br&gt;&lt;br&gt;        &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token key atrule&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; Deploy&lt;br&gt;          &lt;span class=&quot;token key atrule&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; peaceiris/actions&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;gh&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;pages@v3&lt;br&gt;          &lt;span class=&quot;token key atrule&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;&lt;br&gt;            &lt;span class=&quot;token key atrule&quot;&gt;deploy_key&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; $&lt;br&gt;            &lt;span class=&quot;token key atrule&quot;&gt;publish_dir&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; ./_site&lt;br&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;上面文件中 secrets.ACTIONS_DEPLOY_KEY 正好对应了步骤4中配置好的私钥, 这样action中可以向仓库gh-page分支提交编译好的文件&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol start=&quot;6&quot;&gt;
+&lt;li&gt;最后一步, 把github-page的source 设置为gh-page, 这样每次往master分支提交内容之后, 就可以触发 action 自动编译文件push到gh-page分支, 你可以在自己的 &amp;lt;username&amp;gt;.github.io 看到最新的博客了&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&quot;%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99&quot;&gt;参考资料 &lt;a class=&quot;direct-link&quot; href=&quot;#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99&quot;&gt;#&lt;/a&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.rockyourcode.com/how-to-deploy-eleventy-to-github-pages-with-github-actions/&quot;&gt;https://www.rockyourcode.com/how-to-deploy-eleventy-to-github-pages-with-github-actions/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.linkedin.com/pulse/eleventy-github-pages-lea-tortay/&quot;&gt;https://www.linkedin.com/pulse/eleventy-github-pages-lea-tortay/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;11ty基本用法
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.bilibili.com/video/BV1zw41197NL?from=search&amp;amp;seid=4624100872590089830&quot;&gt;https://www.bilibili.com/video/BV1zw41197NL?from=search&amp;amp;seid=4624100872590089830&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.11ty.dev/&quot;&gt;https://www.11ty.dev/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 
 			
 		</content>

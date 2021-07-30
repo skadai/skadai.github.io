@@ -13,7 +13,7 @@
   
   <url>
     <loc>https://skadai.github.io/posts/Starter/</loc>
-    <lastmod>2021-07-30T06:37:02.000Z</lastmod>
+    <lastmod>2021-07-30T06:40:24.000Z</lastmod>
   </url>
   
   
@@ -26,7 +26,7 @@
   
   <url>
     <loc>https://skadai.github.io/about/</loc>
-    <lastmod>2021-07-30T06:37:32.453Z</lastmod>
+    <lastmod>2021-07-30T06:40:41.054Z</lastmod>
   </url>
   
   
@@ -39,7 +39,7 @@
   
   <url>
     <loc>https://skadai.github.io/posts/</loc>
-    <lastmod>2021-07-30T06:37:32.453Z</lastmod>
+    <lastmod>2021-07-30T06:40:41.054Z</lastmod>
   </url>
   
   
@@ -52,7 +52,7 @@
   
   <url>
     <loc>https://skadai.github.io/history/</loc>
-    <lastmod>2021-07-30T06:37:32.473Z</lastmod>
+    <lastmod>2021-07-30T06:40:41.074Z</lastmod>
   </url>
   
   
@@ -65,7 +65,7 @@
   
   <url>
     <loc>https://skadai.github.io/</loc>
-    <lastmod>2021-07-30T06:37:32.493Z</lastmod>
+    <lastmod>2021-07-30T06:40:41.090Z</lastmod>
   </url>
   
   
@@ -78,7 +78,7 @@
   
   <url>
     <loc>https://skadai.github.io/music/</loc>
-    <lastmod>2021-07-30T06:37:32.493Z</lastmod>
+    <lastmod>2021-07-30T06:40:41.094Z</lastmod>
   </url>
   
   
@@ -91,7 +91,7 @@
   
   <url>
     <loc>https://skadai.github.io/page-list/</loc>
-    <lastmod>2021-07-30T06:37:32.493Z</lastmod>
+    <lastmod>2021-07-30T06:40:41.094Z</lastmod>
   </url>
   
   
@@ -104,7 +104,7 @@
   
   <url>
     <loc>https://skadai.github.io/tags/</loc>
-    <lastmod>2021-07-30T06:37:32.493Z</lastmod>
+    <lastmod>2021-07-30T06:40:41.094Z</lastmod>
   </url>
   
   
@@ -117,7 +117,7 @@
   
   <url>
     <loc>https://skadai.github.io/tags/static/</loc>
-    <lastmod>2021-07-30T06:37:32.493Z</lastmod>
+    <lastmod>2021-07-30T06:40:41.094Z</lastmod>
   </url>
   
   
@@ -130,7 +130,20 @@
   
   <url>
     <loc>https://skadai.github.io/tags/history/</loc>
-    <lastmod>2021-07-30T06:37:32.493Z</lastmod>
+    <lastmod>2021-07-30T06:40:41.094Z</lastmod>
+  </url>
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <url>
+    <loc>https://skadai.github.io/tags/tech/</loc>
+    <lastmod>2021-07-30T06:40:41.094Z</lastmod>
   </url>
   
   
@@ -143,6 +156,19 @@
   
   <url>
     <loc>https://skadai.github.io/tech/</loc>
-    <lastmod>2021-07-30T06:37:32.493Z</lastmod>
+    <lastmod>2021-07-30T06:40:41.094Z</lastmod>
+  </url>
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <url>
+    <loc>https://skadai.github.io/posts/deploy_11ty_in_github-page/</loc>
+    <lastmod>2021-07-31T00:00:00.000Z</lastmod>
   </url>
 </urlset>
