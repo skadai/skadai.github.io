@@ -13,7 +13,7 @@
   
   <url>
     <loc>https://skadai.github.io/posts/Starter/</loc>
-    <lastmod>2021-07-30T05:36:03.000Z</lastmod>
+    <lastmod>2021-07-30T06:37:02.000Z</lastmod>
   </url>
   
   
@@ -26,7 +26,7 @@
   
   <url>
     <loc>https://skadai.github.io/about/</loc>
-    <lastmod>2021-07-30T05:36:24.501Z</lastmod>
+    <lastmod>2021-07-30T06:37:32.453Z</lastmod>
   </url>
   
   
@@ -39,7 +39,7 @@
   
   <url>
     <loc>https://skadai.github.io/posts/</loc>
-    <lastmod>2021-07-30T05:36:24.501Z</lastmod>
+    <lastmod>2021-07-30T06:37:32.453Z</lastmod>
   </url>
   
   
@@ -52,7 +52,7 @@
   
   <url>
     <loc>https://skadai.github.io/history/</loc>
-    <lastmod>2021-07-30T05:36:24.521Z</lastmod>
+    <lastmod>2021-07-30T06:37:32.473Z</lastmod>
   </url>
   
   
@@ -65,7 +65,20 @@
   
   <url>
     <loc>https://skadai.github.io/</loc>
-    <lastmod>2021-07-30T05:36:24.537Z</lastmod>
+    <lastmod>2021-07-30T06:37:32.493Z</lastmod>
+  </url>
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <url>
+    <loc>https://skadai.github.io/music/</loc>
+    <lastmod>2021-07-30T06:37:32.493Z</lastmod>
   </url>
   
   
@@ -78,7 +91,7 @@
   
   <url>
     <loc>https://skadai.github.io/page-list/</loc>
-    <lastmod>2021-07-30T05:36:24.537Z</lastmod>
+    <lastmod>2021-07-30T06:37:32.493Z</lastmod>
   </url>
   
   
@@ -91,7 +104,7 @@
   
   <url>
     <loc>https://skadai.github.io/tags/</loc>
-    <lastmod>2021-07-30T05:36:24.537Z</lastmod>
+    <lastmod>2021-07-30T06:37:32.493Z</lastmod>
   </url>
   
   
@@ -103,7 +116,33 @@
   
   
   <url>
-    <loc>https://skadai.github.io/tags/another-tag/</loc>
-    <lastmod>2021-07-30T05:36:24.537Z</lastmod>
+    <loc>https://skadai.github.io/tags/static/</loc>
+    <lastmod>2021-07-30T06:37:32.493Z</lastmod>
+  </url>
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <url>
+    <loc>https://skadai.github.io/tags/history/</loc>
+    <lastmod>2021-07-30T06:37:32.493Z</lastmod>
+  </url>
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <url>
+    <loc>https://skadai.github.io/tech/</loc>
+    <lastmod>2021-07-30T06:37:32.493Z</lastmod>
   </url>
 </urlset>
