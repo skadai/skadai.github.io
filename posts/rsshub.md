@@ -12,8 +12,7 @@ image: https://cdn.pixabay.com/photo/2020/08/30/20/54/rice-field-5530707_1280.jp
 #### RSS 是什么
 
 [RSS](https://en.wikipedia.org/wiki/RSS) 的全称是 RDF Site Summary 或者 Really Simple Syndication, ~~别问我英文啥意思我不认识~~
-就是让不同的网站的数据都可以用统一的格式进行定义和传输，这样我们可以挑选自己感兴趣的网站进行订阅，获取到新的文章集中阅读了，这可以让我们集中阅读感兴趣
-的文章乃至观看视频，不用在网站上面晃来晃去浪费时间啦
+就是让不同的网站的数据都可以用统一的格式进行定义和传输，这样我们可挑选自己感兴趣的网站进行订阅，获取到新的文章集中阅读了，这可以让我们集中阅读感兴趣的文章乃至观看视频，不用在网站上面晃来晃去浪费时间啦
 
 #### RSS 阅读器
 
@@ -77,7 +76,7 @@ docker run -d --name rsshub -p 1200:1200 diygod/rsshub
 
 ![add rule](http://cdn.glofission.xyz/img/a070687ca2ed0a117eac459bd2edfbfc-20210807181508-b0ee44.png)
 
-![add rule2](http://cdn.glofission.xyz/img/69562bef7d90ce983ade57b9262dc30c-Jietu20210807-181822-d48ca9.jpg)
+![add rule2](https://gitee.com/skadai/bluebird/raw/master/5a4ca0d6c33d77ffef06e1cbe305daef-20210808092442-13a705.png)
 
 5. 把安全组应用到ECS上面
 
