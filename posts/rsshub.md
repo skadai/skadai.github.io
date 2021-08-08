@@ -89,4 +89,4 @@ docker run -d --name rsshub -p 1200:1200 diygod/rsshub
 
 ---
 
-有个 RSSHub + Reeder 这个组合，我们可以很方便添加自己感兴趣的内容了，不用在漫无目的的看了，大大的节省时间（~~maybe是看了更多有的没的~~）
+有个 RSSHub + Reeder 这个组合，就可以很方便添加自己感兴趣的内容了，不用在漫无目的的看了，大大的节省时间（~~maybe是看了更多有的没的~~）
