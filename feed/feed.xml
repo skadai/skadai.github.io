@@ -5,7 +5,7 @@
 	
 	<link href="https://skadai.github.io/feed/feed.xml" rel="self"/>
 	<link href="https://skadai.github.io"/>
-	<updated>2021-07-31T00:00:00-00:00</updated>
+	<updated>2021-08-07T00:00:00-00:00</updated>
 	<id>https://skadai.github.io</id>
 	<author>
 		<name>sk</name>
@@ -86,6 +86,78 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
+
+			
+		</content>
+	</entry>
+	
+	<entry>
+		<title>试用 RSSHub</title>
+		<link href="https://skadai.github.io/posts/rsshub/"/>
+		<updated>2021-08-07T00:00:00-00:00</updated>
+		<id>https://skadai.github.io/posts/rsshub/</id>
+		<content type="html">
+		  &lt;h4 id=&quot;rss-%E6%98%AF%E4%BB%80%E4%B9%88&quot;&gt;RSS 是什么 &lt;a class=&quot;direct-link&quot; href=&quot;#rss-%E6%98%AF%E4%BB%80%E4%B9%88&quot;&gt;#&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/RSS&quot;&gt;RSS&lt;/a&gt; 的全称是 RDF Site Summary 或者 Really Simple Syndication, &lt;s&gt;别问我英文啥意思我不认识&lt;/s&gt;&lt;br&gt;
+就是让不同的网站的数据都可以用统一的格式进行定义和传输，这样我们可挑选自己感兴趣的网站进行订阅，获取到新的文章集中阅读了，这可以让我们集中阅读感兴趣的文章乃至观看视频，不用在网站上面晃来晃去浪费时间啦&lt;/p&gt;
+&lt;h4 id=&quot;rss-%E9%98%85%E8%AF%BB%E5%99%A8&quot;&gt;RSS 阅读器 &lt;a class=&quot;direct-link&quot; href=&quot;#rss-%E9%98%85%E8%AF%BB%E5%99%A8&quot;&gt;#&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;不少网站都提供了下面这个按钮，其实代表的就是rss的意思，点击按钮可以得到一个url，这个url提供的就是和正式网站一直但是样式有别的订阅内容了，通常会是xml格式的文本，所以是没办法方便直接看的。&lt;br&gt;
+&lt;img src=&quot;http://cdn.glofission.xyz/img/1b1fe7c45939aff7450787a980c29691-20210807171958-32a5c6.png&quot; alt=&quot;rss icon&quot;&gt;&lt;/p&gt;
+&lt;p&gt;此时呢，我们需要有一个阅读器可以解析这么内容并渲染成良好的格式，比如 mac 用户可以选择 &lt;a href=&quot;https://reederapp.com/&quot;&gt;reeder&lt;/a&gt;。&lt;br&gt;
+使用的方式也是很简单的，直接在reeder中创建一个本地rss账户, 然后添加订阅源&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://cdn.glofission.xyz/img/5587b52eff73570439b162d574847050-20210807173555-f52921.png&quot; alt=&quot;reeder操作&quot;&gt;&lt;/p&gt;
+&lt;p&gt;然后就可以看到，添加源的文章已经一个个排好等待阅读了，reeder 阅读器已经帮忙渲染好了，可以看到排版还是不错的&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://cdn.glofission.xyz/img/5f62ce7eb780ed571010188fe8765b2d-20210807173835-088b0a.png&quot; alt=&quot;reeder article&quot;&gt;&lt;/p&gt;
+&lt;h4 id=&quot;rsshub&quot;&gt;RSSHub &lt;a class=&quot;direct-link&quot; href=&quot;#rsshub&quot;&gt;#&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;实际上，很多网站是没有上面那个魔法图标的，比如b站，我们每次就只能进入网站，点击关注的up动态，看有没有投稿，然后再点进去观看了么？&lt;/p&gt;
+&lt;p&gt;当然是有更好的办法的，&lt;a href=&quot;https://github.com/DIYgod/RSSHub&quot;&gt;RSSHub&lt;/a&gt; 就是来干这个的&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;RSSHub 是一个开源、简单易用、易于扩展的 RSS 生成器，可以给任何奇奇怪怪的内容生成 RSS 订阅源。RSSHub 借助于开源社区的力量快速发展中，目前已适配数百家网站的上千项内容&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;翻译一下，就是会写代码的人已经帮把一些常用的网站做好了提取rss的方法，只需要有个机器能根据这些方法把网站数据整成标准 RSS 的格式并提供 url 链接，然后我们就像上面那样用就好了。下面的图片展示了 RSSHub 支持了哪些网站，还是相当丰富的&lt;/p&gt;
+&lt;p&gt;RSSHub 自己是提供了试用 &lt;a href=&quot;https://rsshub.app/&quot;&gt;demo&lt;/a&gt; 的，只需要简单的按照不同网站指定的url格式自己拼接，然后直接粘贴到阅读器里面就完事了！&lt;/p&gt;
+&lt;div style=&quot;display:flex;justify-content:space-between&quot;&gt;
+&lt;img src=&quot;http://cdn.glofission.xyz/img/9d3beee4c6f6ef1f1228b0b706e80863-20210807175616-dc81cd.png&quot;&gt;
+&lt;img src=&quot;http://cdn.glofission.xyz/img/179e3b153d7d76dc0497e6f7d4944a2a-20210807175551-b96172.png&quot;&gt;
+&lt;/div&gt;
+&lt;h4 id=&quot;rsshub-%E9%83%A8%E7%BD%B2&quot;&gt;RSSHub 部署 &lt;a class=&quot;direct-link&quot; href=&quot;#rsshub-%E9%83%A8%E7%BD%B2&quot;&gt;#&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;官方试用的demo毕竟太多人用，很容易遭到网站的反爬限制，这个时候你可以选择自己部署一个 RSSHub 的服务, RSSHub 的官方文档里面也有 &lt;a href=&quot;https://docs.rsshub.app/install/&quot;&gt;操作说明&lt;/a&gt;, 亲测可用&lt;/p&gt;
+&lt;p&gt;下面简单描述下流程，首先得有一个自己的服务器，我用的是 aliyun ECS(单核 内存2GiB, 硬盘40GB)&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;ssh 登录到服务器&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;拉取 RSSHub 的 Docker 镜像, 不加 tag 的话会直接下载最新的&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;docker pull diygod/rsshub&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;如果没有用过 docker 的话需要自己先安装一下， 可以参考 &lt;a href=&quot;https://www.runoob.com/docker/ubuntu-docker-install.html&quot;&gt;Ubuntu Docker安装&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol start=&quot;3&quot;&gt;
+&lt;li&gt;启动镜像&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;docker run -d --name rsshub -p &lt;span class=&quot;token number&quot;&gt;1200&lt;/span&gt;:1200 diygod/rsshub&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;稍微解释一下上面这个命令&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;docker run&lt;/code&gt; 就是把镜像启动一个容器跑起来，&lt;code&gt;--name&lt;/code&gt; 给容器命名， &lt;code&gt;-d&lt;/code&gt; 指定后台运行&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-p 1200:1200&lt;/code&gt; 并让服务器上面的1200端口和容器内部的1200建立映射，这样在服务器上面访问 localhost:1200 就可以访问到容器里面的服务了，容器内部的端口1200是写死的，但是服务器上面的端口是可以修改的，比如改成8000（如果没有冲突的话）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&quot;4&quot;&gt;
+&lt;li&gt;服务器安全组加上1200端口, 操作如下&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;好吧，其实上面 RSSHub 文档里面都有....&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://cdn.glofission.xyz/img/a070687ca2ed0a117eac459bd2edfbfc-20210807181508-b0ee44.png&quot; alt=&quot;add rule&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://gitee.com/skadai/bluebird/raw/master/5a4ca0d6c33d77ffef06e1cbe305daef-20210808092442-13a705.png&quot; alt=&quot;add rule2&quot;&gt;&lt;/p&gt;
+&lt;ol start=&quot;5&quot;&gt;
+&lt;li&gt;把安全组应用到ECS上面&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&quot;http://cdn.glofission.xyz/img/c7c495b56bb08bcbbe1b7bc593012e6e-20210807182042-0a7e9a.png&quot; alt=&quot;apply rule&quot;&gt;&lt;/p&gt;
+&lt;p&gt;上面图片打码的就是服务器的公网 IP了，经过上面一通操作我们在浏览器输入 http://&amp;lt;公网IP&amp;gt;:1200, 看到和上面 RSSHub demo 一样的页面就算部署成功了，之后我们就可以用专属的RSS 提取服务来生成订阅源了🙂&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://cdn.glofission.xyz/img/20dd670b20cc76c57676829ac7ba0657-20210807182335-38e268.png&quot; alt=&quot;final page&quot;&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;有个 RSSHub + Reeder 这个组合，就可以很方便添加自己感兴趣的内容了，不用在漫无目的的看了，大大的节省时间（&lt;s&gt;maybe是看了更多有的没的&lt;/s&gt;）&lt;/p&gt;
 
 			
 		</content>
