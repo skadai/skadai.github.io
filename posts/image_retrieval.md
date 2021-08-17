@@ -5,6 +5,7 @@ date: 2021-08-17
 layout: layouts/post.njk
 tags:
   - tech
+  - CBIR
 ---
 
 > 工作中碰到一个棘手的问题: 如何从海量商品中找到标准库中的那一个？
@@ -92,7 +93,6 @@ loss = max(d(a, p) - d(a, n) + margin, 0)
 
 ### 后续章节(略)
 下面是代码实现和示例项目, 直接看原博就好了。 尤其是作者关于 batch hard strategy 的实现, 可谓是赏心悦目, 值得好好学习
-
 
 ### 感想
 
