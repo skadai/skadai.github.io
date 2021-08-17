@@ -35,9 +35,9 @@ header nav {
   --main-width: calc(100vw - 3em);
 }
 
-@media (min-width: 37.5em) {
+@media (min-width: 47.5em) {
   :root {
-    --main-width: calc(37.5em - 3em);
+    --main-width: calc(47.5em - 3em);
   }
 }
 /*! purgecss end ignore */
@@ -1043,7 +1043,7 @@ header label {
 }
 header {
   padding: 4.5em 1.5em 3em;
-  width: 37.5em;
+  width: 47.5em;
   margin: 0 auto;
   text-align: center;
   max-width: 100%;
@@ -1115,7 +1115,7 @@ footer p {
 article {
   max-width: 100%;
   padding: 1.5em;
-  width: 37.5em;
+  width: 47.5em;
   margin: 0 auto;
 }
 ol,
