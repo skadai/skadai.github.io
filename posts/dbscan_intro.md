@@ -59,7 +59,7 @@ DBSCAN的作者在原有模型的基础上提出了 GDBSCAN （参数选择都�
 
 通过计算每个节点最近**第k个点**的距离, 降序排列, 可以得到 k-dist plot曲线如下, 对于噪声点距离是比较大的, 如果节点在cluster中距离就比较小的, 所以可以看出曲线会逐渐归于平缓
 
-![4-distance-plot](https://miro.medium.com/max/700/1*ShWe1k8ejMaG1aZG0s8dng.png)
+![4-distance-plot](https://gitee.com/skadai/bluebird/raw/master/b454c66f637a28913fa5d2e13c15c6d6-20210819105939-5aedda.png)
 
 作者建议选择 e 值在 k-dist-plot 平缓区间和下降区间的交界附近, 对应的横坐标 p * 2 作为u的建议取值
 
@@ -69,17 +69,17 @@ DBSCAN的作者在原有模型的基础上提出了 GDBSCAN （参数选择都�
 
 如果cluster 内部的节点分布是不均匀的, 那么聚类效果就没有那么理想了
 
-![problem](https://miro.medium.com/max/2000/1*Pic2bp-_2cthiEEOiUUczg.png)
+![problem](https://gitee.com/skadai/bluebird/raw/master/fafb39c2340c9951a7d06a48728cc2c5-20210819110650-3f9454.png)
 
 可以通过人工选择参数搞出来比较不错的的结果但是这样其实就属于经验了, 没办法复制
 
-![tune](https://miro.medium.com/max/2000/1*grFBxXreguk6I5K_ZQOXVw.png)
+![tune](https://gitee.com/skadai/bluebird/raw/master/cd0453978e518201d78a5ee2579e08bc-20210819110705-bd1c89.png)
 
 #### overlapping
 
 当两个cluster之间存在一些交叉区域, 有可能会被染成一个。这个是比较难以处理的，如果把 e 增大, u减少, 相当于削弱了 cluster 限制, 可能cluser都被连成一块, 反之如果e减少, u增加, 加强了cluster 的限制, 可能会出来更多的区域
 
-![problem](https://miro.medium.com/max/2000/1*NBly3GDNjCT3HJsXFMke5A.png)
+![problem](https://gitee.com/skadai/bluebird/raw/master/962a5c8e9ff0b602fae1bcf39d882085-20210819110721-59d7e4.png)
 
 ### 小结
 
