@@ -5,7 +5,7 @@
 	
 	<link href="https://skadai.github.io/feed/feed.xml" rel="self"/>
 	<link href="https://skadai.github.io"/>
-	<updated>2021-08-17T00:00:00-00:00</updated>
+	<updated>2021-08-18T00:00:00-00:00</updated>
 	<id>https://skadai.github.io</id>
 	<author>
 		<name>sk</name>
@@ -317,6 +317,91 @@ Once this is done, you don&#39;t really need to push the clusters closer togethe
 &lt;h4 id=&quot;%E6%84%9F%E6%83%B3&quot;&gt;感想 &lt;a class=&quot;direct-link&quot; href=&quot;#%E6%84%9F%E6%83%B3&quot;&gt;#&lt;/a&gt;&lt;/h4&gt;
 &lt;p&gt;triplet loss 的思想和之前看过的一个&lt;a href=&quot;https://github.com/wvangansbeke/Unsupervised-Classification&quot;&gt;文章&lt;/a&gt;有一些相似, 都是关注样本内部相同标签和不同标签的差异性, 后者解决的是固定标签数目的无监督分类问题, 直接用图片的变化认为是一个正样本来做, anchor和正样本的距离尽可能小, 配合 self-labelling (把置信度高的直接当成标注数据) 让无监督分类的准确率直接达到了 85% 以上&lt;/p&gt;
 &lt;p&gt;对于商品匹配问题, 从类间差异和类内共性出发, 有没有可能挖掘一些弱监督的训练手段呢 ?&lt;/p&gt;
+
+			
+		</content>
+	</entry>
+	
+	<entry>
+		<title>DBSCAN 原理篇</title>
+		<link href="https://skadai.github.io/posts/dbscan_intro/"/>
+		<updated>2021-08-18T00:00:00-00:00</updated>
+		<id>https://skadai.github.io/posts/dbscan_intro/</id>
+		<content type="html">
+		  &lt;p&gt;本文是&lt;a href=&quot;https://medium.com/odessa-ml-club/a-journey-to-clustering-introduction-to-dbscan-e724fa899b6f&quot;&gt;meidum odessa-ml-club博客&lt;/a&gt;的阅读整理&lt;/p&gt;
+&lt;h2 id=&quot;dbscan-%E8%83%8C%E6%99%AF&quot;&gt;DBSCAN 背景 &lt;a class=&quot;direct-link&quot; href=&quot;#dbscan-%E8%83%8C%E6%99%AF&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;1996 年,&lt;/strong&gt; 论文 A Density-Based Algorithm for Discovering Clusters in Large Spatial Databases with Noise 中提出来该算法, 文章基于一个朴素的假设: 人们是通过类内密度比其他区域要明显的高识别出来类簇的, 反之, 如果只是有一些噪音, 应该是杂乱无章的, 比类簇内部的数据点密度要明显的小。&lt;/p&gt;
+&lt;h3 id=&quot;%E6%95%B0%E6%8D%AE%E5%88%92%E5%88%86&quot;&gt;数据划分 &lt;a class=&quot;direct-link&quot; href=&quot;#%E6%95%B0%E6%8D%AE%E5%88%92%E5%88%86&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;DBSCAN 将数据分为了三类, 具体来说, 是通过两个参数划分的,  附近[e]范围内含有[u]节点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;core point(cluster center): 附近距离e范围内至少含有u个节点&lt;/li&gt;
+&lt;li&gt;border point(cluster margin): 自己本身不是core point但是在其他core point的范围之内&lt;/li&gt;
+&lt;li&gt;noise data: 不属于上面的两个范围&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于相同的数据集, 不同的参数选择得到的数据结果是不同的。&lt;/p&gt;
+&lt;h3 id=&quot;%E6%95%B0%E6%8D%AE%E9%97%B4%E5%85%B3%E7%B3%BB&quot;&gt;数据间关系 &lt;a class=&quot;direct-link&quot; href=&quot;#%E6%95%B0%E6%8D%AE%E9%97%B4%E5%85%B3%E7%B3%BB&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;directly density-reachable 两个节点其中一个是core point并且另外一个位于e范围&lt;/li&gt;
+&lt;li&gt;density-reachable 一个节点通过多层 directly density-reachable关系可以找到另外一个节点&lt;/li&gt;
+&lt;li&gt;存在中间节点c, 节点a和b都满足和c density-reachable, 那么a和b是density connected&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;上面三个关系是逐渐变弱的, directly density-reachable更是强调了 core point的概念, 不具有交换性&lt;/p&gt;
+&lt;h3 id=&quot;cluster-%E5%AE%9A%E4%B9%89&quot;&gt;cluster 定义 &lt;a class=&quot;direct-link&quot; href=&quot;#cluster-%E5%AE%9A%E4%B9%89&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;数据节点的集合C中, 任意两个都是 density-connected&lt;/li&gt;
+&lt;li&gt;任何一个节点属于C, 则这个节点所有 density-connected的节点也属于C&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;从节点的定义出发可以得到下面的定理的&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;对于集合中的 core point来说, 所有节点都是 density-reachable的, 集合就是core point的density-reachable的所有节点的总和 (所有的core point和margin point必然属于某个集合)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果两个集合存在交集, 则交集中的节点全部是 border point&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&quot;%E7%AE%97%E6%B3%95%E8%BF%87%E7%A8%8B&quot;&gt;算法过程 &lt;a class=&quot;direct-link&quot; href=&quot;#%E7%AE%97%E6%B3%95%E8%BF%87%E7%A8%8B&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;遍历集合中的所有节点, 为每个节点进行标识&lt;/li&gt;
+&lt;li&gt;如果节点已经标识, 跳过, 如果节点没有标, 看是不是 core point, 是的话步骤3, 不是0&lt;/li&gt;
+&lt;li&gt;cluster数目加1, 把节点 density-reachable的所有节点都标上&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在遍历节点的过程中, 用了 R*-tree 数据结构, 是的算法的时间复杂度为 O(nlgn)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1%E9%97%AE%E9%A2%98&quot;&gt;参数估计问题 &lt;a class=&quot;direct-link&quot; href=&quot;#%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1%E9%97%AE%E9%A2%98&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;算法输入的参数 e 和 u 对于聚类的结果是有明显影响的, 这两个参数如何决定呢?&lt;br&gt;
+DBSCAN的作者在原有模型的基础上提出了 GDBSCAN （参数选择都是程序帮忙完成了）&lt;/p&gt;
+&lt;p&gt;通过计算每个节点最近&lt;strong&gt;第k个点&lt;/strong&gt;的距离, 降序排列, 可以得到 k-dist plot曲线如下, 对于噪声点距离是比较大的, 如果节点在cluster中距离就比较小的, 所以可以看出曲线会逐渐归于平缓&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://gitee.com/skadai/bluebird/raw/master/b454c66f637a28913fa5d2e13c15c6d6-20210819105939-5aedda.png&quot; alt=&quot;4-distance-plot&quot;&gt;&lt;/p&gt;
+&lt;p&gt;作者建议选择 e 值在 k-dist-plot 平缓区间和下降区间的交界附近, 对应的横坐标 p * 2 作为u的建议取值&lt;/p&gt;
+&lt;h3 id=&quot;dbscan%E7%9A%84%E9%97%AE%E9%A2%98&quot;&gt;DBSCAN的问题 &lt;a class=&quot;direct-link&quot; href=&quot;#dbscan%E7%9A%84%E9%97%AE%E9%A2%98&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;h4 id=&quot;%E5%9D%87%E5%8C%80%E6%80%A7%E5%88%86%E5%B8%83%E9%97%AE%E9%A2%98&quot;&gt;均匀性分布问题 &lt;a class=&quot;direct-link&quot; href=&quot;#%E5%9D%87%E5%8C%80%E6%80%A7%E5%88%86%E5%B8%83%E9%97%AE%E9%A2%98&quot;&gt;#&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;如果cluster 内部的节点分布是不均匀的, 那么聚类效果就没有那么理想了&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://gitee.com/skadai/bluebird/raw/master/fafb39c2340c9951a7d06a48728cc2c5-20210819110650-3f9454.png&quot; alt=&quot;problem&quot;&gt;&lt;/p&gt;
+&lt;p&gt;可以通过人工选择参数搞出来比较不错的的结果但是这样其实就属于经验了, 没办法复制&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://gitee.com/skadai/bluebird/raw/master/cd0453978e518201d78a5ee2579e08bc-20210819110705-bd1c89.png&quot; alt=&quot;tune&quot;&gt;&lt;/p&gt;
+&lt;h4 id=&quot;overlapping&quot;&gt;overlapping &lt;a class=&quot;direct-link&quot; href=&quot;#overlapping&quot;&gt;#&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;当两个cluster之间存在一些交叉区域, 有可能会被染成一个。这个是比较难以处理的，如果把 e 增大, u减少, 相当于削弱了 cluster 限制, 可能cluser都被连成一块, 反之如果e减少, u增加, 加强了cluster 的限制, 可能会出来更多的区域&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://gitee.com/skadai/bluebird/raw/master/962a5c8e9ff0b602fae1bcf39d882085-20210819110721-59d7e4.png&quot; alt=&quot;problem&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;%E5%B0%8F%E7%BB%93&quot;&gt;小结 &lt;a class=&quot;direct-link&quot; href=&quot;#%E5%B0%8F%E7%BB%93&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;DBSCAN 算法的主要利弊是&lt;/p&gt;
+&lt;h4 id=&quot;%E4%BC%98%E5%8A%BF&quot;&gt;优势 &lt;a class=&quot;direct-link&quot; href=&quot;#%E4%BC%98%E5%8A%BF&quot;&gt;#&lt;/a&gt;&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;不需要提前给定cluster数目&lt;/li&gt;
+&lt;li&gt;对于一些离散很强的点, 很容易干掉&lt;/li&gt;
+&lt;li&gt;善于处理cluster形状不规则, distance函数选择丰富&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&quot;%E5%8A%A3%E5%8A%BF&quot;&gt;劣势 &lt;a class=&quot;direct-link&quot; href=&quot;#%E5%8A%A3%E5%8A%BF&quot;&gt;#&lt;/a&gt;&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;虽然有经验公式, 参数选择同样是需要微调的&lt;/li&gt;
+&lt;li&gt;集合内部分布不均匀, 存在 overlap区域的时候表现不好&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;DBSCAN不是完美的, 但是其思想推动了一系列密度相关的聚类算法的提出, 直到现在也是经常被讨论的, 经典地位不可撼动&lt;/p&gt;
+&lt;h2 id=&quot;%E5%8F%82%E8%80%83&quot;&gt;参考 &lt;a class=&quot;direct-link&quot; href=&quot;#%E5%8F%82%E8%80%83&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://medium.com/odessa-ml-club/a-journey-to-clustering-introduction-to-dbscan-e724fa899b6f&quot;&gt;a journey to clustering algorithm&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
 			
 		</content>
