@@ -40,6 +40,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+
 const { DateTime } = require("luxon");
 const { promisify } = require("util");
 const fs = require("fs");
@@ -51,8 +52,8 @@ const pluginRss = require("@11ty/eleventy-plugin-rss");
 const pluginSyntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 const pluginNavigation = require("@11ty/eleventy-navigation");
 const markdownIt = require("markdown-it");
-const markdownItKatex = require("markdown-it-katex");
 const markdownItAnchor = require("markdown-it-anchor");
+const markdownItKatex = require("markdown-it-katex");
 const localImages = require("./third_party/eleventy-plugin-local-images/.eleventy.js");
 const CleanCSS = require("clean-css");
 const GA_ID = require("./_data/metadata.json").googleAnalyticsId;
@@ -190,7 +191,7 @@ module.exports = function (eleventyConfig) {
     permalink: true,
     permalinkClass: "direct-link",
     permalinkSymbol: "#",
-  }).use(markdownItKatex);
+  }).use(markdownItKatex, {"throwOnError" : false, "errorColor" : " #cc0000"});
 
   eleventyConfig.setLibrary("md", markdownLibrary);
 

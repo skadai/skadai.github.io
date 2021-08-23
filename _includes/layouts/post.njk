@@ -2,6 +2,9 @@
 #layout: layouts/base.njk
 templateClass: tmpl-post
 ---
+{% set css %}
+  {% include "css/katex.css" %}
+{% endset %}
 {% extends "layouts/base.njk" %}
 
 
@@ -48,5 +51,8 @@ templateClass: tmpl-post
   "description": "{{ content | striptags | truncate(140) }}"
 }
 </script>
+<style>
+  {{ css | cssmin | safe }}
+</style>
 
 {% endblock %}
