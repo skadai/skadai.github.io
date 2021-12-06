@@ -13,7 +13,7 @@
   
   <url>
     <loc>https://skadai.github.io/posts/Starter/</loc>
-    <lastmod>2021-08-22T08:10:47.000Z</lastmod>
+    <lastmod>2021-12-06T01:16:00.000Z</lastmod>
   </url>
   
   
@@ -28,7 +28,7 @@
   
   <url>
     <loc>https://skadai.github.io/posts/deploy_11ty_in_github-page/</loc>
-    <lastmod>2021-08-22T08:10:47.000Z</lastmod>
+    <lastmod>2021-12-06T01:16:00.000Z</lastmod>
   </url>
   
   
@@ -43,7 +43,7 @@
   
   <url>
     <loc>https://skadai.github.io/posts/rsshub/</loc>
-    <lastmod>2021-08-22T08:10:47.000Z</lastmod>
+    <lastmod>2021-12-06T01:16:00.000Z</lastmod>
   </url>
   
   
@@ -58,7 +58,7 @@
   
   <url>
     <loc>https://skadai.github.io/posts/flask_caching/</loc>
-    <lastmod>2021-08-22T08:10:47.000Z</lastmod>
+    <lastmod>2021-12-06T01:16:00.000Z</lastmod>
   </url>
   
   
@@ -73,7 +73,7 @@
   
   <url>
     <loc>https://skadai.github.io/posts/triplet_loss/</loc>
-    <lastmod>2021-08-22T08:10:47.000Z</lastmod>
+    <lastmod>2021-12-06T01:16:00.000Z</lastmod>
   </url>
   
   
@@ -88,7 +88,22 @@
   
   <url>
     <loc>https://skadai.github.io/posts/dbscan_intro/</loc>
-    <lastmod>2021-08-22T08:10:47.000Z</lastmod>
+    <lastmod>2021-12-06T01:16:00.000Z</lastmod>
+  </url>
+  
+  
+  
+  
+  
+  
+    
+  
+  
+    
+  
+  <url>
+    <loc>https://skadai.github.io/posts/gaussion_mixture/</loc>
+    <lastmod>2021-12-06T01:16:00.000Z</lastmod>
   </url>
   
   
@@ -103,7 +118,22 @@
   
   <url>
     <loc>https://skadai.github.io/posts/go/</loc>
-    <lastmod>2021-08-22T08:10:47.000Z</lastmod>
+    <lastmod>2021-12-06T01:16:00.000Z</lastmod>
+  </url>
+  
+  
+  
+  
+  
+  
+    
+  
+  
+    
+  
+  <url>
+    <loc>https://skadai.github.io/posts/go_talk/</loc>
+    <lastmod>2021-12-06T01:16:00.000Z</lastmod>
   </url>
   
   
@@ -116,7 +146,7 @@
   
   <url>
     <loc>https://skadai.github.io/about/</loc>
-    <lastmod>2021-08-22T08:11:06.960Z</lastmod>
+    <lastmod>2021-12-06T01:16:26.572Z</lastmod>
   </url>
   
   
@@ -129,7 +159,7 @@
   
   <url>
     <loc>https://skadai.github.io/posts/</loc>
-    <lastmod>2021-08-22T08:11:06.960Z</lastmod>
+    <lastmod>2021-12-06T01:16:26.572Z</lastmod>
   </url>
   
   
@@ -142,7 +172,7 @@
   
   <url>
     <loc>https://skadai.github.io/history/</loc>
-    <lastmod>2021-08-22T08:11:06.976Z</lastmod>
+    <lastmod>2021-12-06T01:16:26.596Z</lastmod>
   </url>
   
   
@@ -155,7 +185,7 @@
   
   <url>
     <loc>https://skadai.github.io/</loc>
-    <lastmod>2021-08-22T08:11:06.992Z</lastmod>
+    <lastmod>2021-12-06T01:16:26.612Z</lastmod>
   </url>
   
   
@@ -168,7 +198,7 @@
   
   <url>
     <loc>https://skadai.github.io/music/</loc>
-    <lastmod>2021-08-22T08:11:06.992Z</lastmod>
+    <lastmod>2021-12-06T01:16:26.612Z</lastmod>
   </url>
   
   
@@ -181,7 +211,7 @@
   
   <url>
     <loc>https://skadai.github.io/page-list/</loc>
-    <lastmod>2021-08-22T08:11:06.992Z</lastmod>
+    <lastmod>2021-12-06T01:16:26.612Z</lastmod>
   </url>
   
   
@@ -194,7 +224,7 @@
   
   <url>
     <loc>https://skadai.github.io/tags/</loc>
-    <lastmod>2021-08-22T08:11:06.996Z</lastmod>
+    <lastmod>2021-12-06T01:16:26.612Z</lastmod>
   </url>
   
   
@@ -207,7 +237,7 @@
   
   <url>
     <loc>https://skadai.github.io/tags/static/</loc>
-    <lastmod>2021-08-22T08:11:06.996Z</lastmod>
+    <lastmod>2021-12-06T01:16:26.612Z</lastmod>
   </url>
   
   
@@ -220,7 +250,7 @@
   
   <url>
     <loc>https://skadai.github.io/tags/history/</loc>
-    <lastmod>2021-08-22T08:11:06.996Z</lastmod>
+    <lastmod>2021-12-06T01:16:26.612Z</lastmod>
   </url>
   
   
@@ -233,7 +263,7 @@
   
   <url>
     <loc>https://skadai.github.io/tags/tech/</loc>
-    <lastmod>2021-08-22T08:11:06.996Z</lastmod>
+    <lastmod>2021-12-06T01:16:26.612Z</lastmod>
   </url>
   
   
@@ -246,7 +276,7 @@
   
   <url>
     <loc>https://skadai.github.io/tags/clustering/</loc>
-    <lastmod>2021-08-22T08:11:06.996Z</lastmod>
+    <lastmod>2021-12-06T01:16:26.612Z</lastmod>
   </url>
   
   
@@ -259,7 +289,20 @@
   
   <url>
     <loc>https://skadai.github.io/tags/go/</loc>
-    <lastmod>2021-08-22T08:11:06.996Z</lastmod>
+    <lastmod>2021-12-06T01:16:26.612Z</lastmod>
+  </url>
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <url>
+    <loc>https://skadai.github.io/tags/talk/</loc>
+    <lastmod>2021-12-06T01:16:26.612Z</lastmod>
   </url>
   
   
@@ -272,7 +315,20 @@
   
   <url>
     <loc>https://skadai.github.io/tags/cbir/</loc>
-    <lastmod>2021-08-22T08:11:06.996Z</lastmod>
+    <lastmod>2021-12-06T01:16:26.612Z</lastmod>
+  </url>
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <url>
+    <loc>https://skadai.github.io/talk/</loc>
+    <lastmod>2021-12-06T01:16:26.612Z</lastmod>
   </url>
   
   
@@ -285,6 +341,6 @@
   
   <url>
     <loc>https://skadai.github.io/tech/</loc>
-    <lastmod>2021-08-22T08:11:06.996Z</lastmod>
+    <lastmod>2021-12-06T01:16:26.612Z</lastmod>
   </url>
 </urlset>

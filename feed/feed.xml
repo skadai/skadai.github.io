@@ -5,7 +5,7 @@
 	
 	<link href="https://skadai.github.io/feed/feed.xml" rel="self"/>
 	<link href="https://skadai.github.io"/>
-	<updated>2021-08-22T00:00:00-00:00</updated>
+	<updated>2021-12-05T00:00:00-00:00</updated>
 	<id>https://skadai.github.io</id>
 	<author>
 		<name>sk</name>
@@ -408,6 +408,53 @@ DBSCAN的作者在原有模型的基础上提出了 GDBSCAN （参数选择都�
 	</entry>
 	
 	<entry>
+		<title>Gaussion Mixture Models 原理篇</title>
+		<link href="https://skadai.github.io/posts/gaussion_mixture/"/>
+		<updated>2021-08-19T00:00:00-00:00</updated>
+		<id>https://skadai.github.io/posts/gaussion_mixture/</id>
+		<content type="html">
+		  &lt;p&gt;本文是&lt;a href=&quot;https://towardsdatascience.com/gaussian-mixture-models-d13a5e915c8e&quot;&gt;Cory Maklin博客&lt;/a&gt;的阅读整理&lt;/p&gt;
+&lt;h2 id=&quot;gaussian-mixture-model-%E8%83%8C%E6%99%AF&quot;&gt;Gaussian Mixture Model 背景 &lt;a class=&quot;direct-link&quot; href=&quot;#gaussian-mixture-model-%E8%83%8C%E6%99%AF&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;大体上和 k-means 是类似的，主要是两点区别&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;解决了 k-means 没有解决的一个关键性问题 variance,  就是说没有考虑到cluster内部分布到底是什么形状，直接楞拿一个hyper-sphere球状空间硬套&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&quot;https://gitee.com/skadai/bluebird/raw/master/98e4ff29c28a5125991153407c39a563-20210819111747-e232ef.png&quot; alt=&quot;k-means&quot;&gt;&lt;/p&gt;
+&lt;p&gt;相比于上图，我们更希望直接得到下图&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://gitee.com/skadai/bluebird/raw/master/a5aca86eb7538b11653de147f364df6c-1-eTAFs5cTUjb_kt-4RgE3uw-c4f628.png&quot; alt=&quot;img&quot;&gt;&lt;/p&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;k-means 进行 hard-classification 而 gaussian-mixture-model 进行的是 soft-classification, k-means中直接就告诉一个点属于哪一个cluster，没有输出属于各个cluster的概率，一锤子买卖没有纠正机会&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&quot;%E5%88%9D%E8%AF%86&quot;&gt;初识 &lt;a class=&quot;direct-link&quot; href=&quot;#%E5%88%9D%E8%AF%86&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;从数学的角度，高斯混合模型对一个点属于某个分布（cluster）的概率进行建模&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;P (z = k|q)&lt;/code&gt; 中 q表示不同高斯分布的参数（均值，方差，权重）&lt;/p&gt;
+&lt;h3 id=&quot;em-%E7%AE%97%E6%B3%95&quot;&gt;EM 算法 &lt;a class=&quot;direct-link&quot; href=&quot;#em-%E7%AE%97%E6%B3%95&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在 GMM的模型中, 一个点来自哪个高斯分布是隐含变量, 高斯混合模型通过隐变量生成样本, 每个样本点的概率等于各个高斯模型的概率的加权和&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;初始化高斯分布的参数 &lt;span class=&quot;katex&quot;&gt;&lt;span class=&quot;katex-mathml&quot;&gt;&lt;math&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;θ&lt;/mi&gt;&lt;/mrow&gt;&lt;annotation encoding=&quot;application/x-tex&quot;&gt;\theta&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&quot;katex-html&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:0.69444em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;strut bottom&quot; style=&quot;height:0.69444em;vertical-align:0em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;base textstyle uncramped&quot;&gt;&lt;span class=&quot;mord mathit&quot; style=&quot;margin-right:0.02778em;&quot;&gt;θ&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;按照下面的步骤迭代直到收敛&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;计算 &lt;span class=&quot;katex&quot;&gt;&lt;span class=&quot;katex-mathml&quot;&gt;&lt;math&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;P&lt;/mi&gt;&lt;mo&gt;(&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;z&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mi&gt;k&lt;/mi&gt;&lt;mi mathvariant=&quot;normal&quot;&gt;∣&lt;/mi&gt;&lt;msub&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;mo separator=&quot;true&quot;&gt;,&lt;/mo&gt;&lt;mi&gt;θ&lt;/mi&gt;&lt;mo&gt;)&lt;/mo&gt;&lt;/mrow&gt;&lt;annotation encoding=&quot;application/x-tex&quot;&gt;P(z_i = k| x_i, \theta)&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&quot;katex-html&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:0.75em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;strut bottom&quot; style=&quot;height:1em;vertical-align:-0.25em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;base textstyle uncramped&quot;&gt;&lt;span class=&quot;mord mathit&quot; style=&quot;margin-right:0.13889em;&quot;&gt;P&lt;/span&gt;&lt;span class=&quot;mopen&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;&lt;span class=&quot;mord mathit&quot; style=&quot;margin-right:0.04398em;&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;vlist&quot;&gt;&lt;span style=&quot;top:0.15em;margin-right:0.05em;margin-left:-0.04398em;&quot;&gt;&lt;span class=&quot;fontsize-ensurer reset-size5 size5&quot;&gt;&lt;span style=&quot;font-size:0em;&quot;&gt;​&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;reset-textstyle scriptstyle cramped&quot;&gt;&lt;span class=&quot;mord mathit&quot;&gt;i&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;baseline-fix&quot;&gt;&lt;span class=&quot;fontsize-ensurer reset-size5 size5&quot;&gt;&lt;span style=&quot;font-size:0em;&quot;&gt;​&lt;/span&gt;&lt;/span&gt;​&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;mrel&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mord mathit&quot; style=&quot;margin-right:0.03148em;&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;mord mathrm&quot;&gt;∣&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;&lt;span class=&quot;mord mathit&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;vlist&quot;&gt;&lt;span style=&quot;top:0.15em;margin-right:0.05em;margin-left:0em;&quot;&gt;&lt;span class=&quot;fontsize-ensurer reset-size5 size5&quot;&gt;&lt;span style=&quot;font-size:0em;&quot;&gt;​&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;reset-textstyle scriptstyle cramped&quot;&gt;&lt;span class=&quot;mord mathit&quot;&gt;i&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;baseline-fix&quot;&gt;&lt;span class=&quot;fontsize-ensurer reset-size5 size5&quot;&gt;&lt;span style=&quot;font-size:0em;&quot;&gt;​&lt;/span&gt;&lt;/span&gt;​&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;mpunct&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mord mathit&quot; style=&quot;margin-right:0.02778em;&quot;&gt;θ&lt;/span&gt;&lt;span class=&quot;mclose&quot;&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt; 也就是某一个数据点位于来自cluster k的概率是多少&lt;/li&gt;
+&lt;li&gt;更新高斯分布的参数q, 使得概率最大&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;看上去是有点抽象的...., 可以参考一篇 &lt;a href=&quot;https://www.bilibili.com/video/BV1Mx411o7ti&quot;&gt;EM算法介绍&lt;/a&gt; 的视频理解&lt;/p&gt;
+&lt;h3 id=&quot;%E4%BB%A3%E7%A0%81&quot;&gt;代码 &lt;a class=&quot;direct-link&quot; href=&quot;#%E4%BB%A3%E7%A0%81&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;GMM (Gaussian mixture model) 的输入是cluster_number, 初始化分布的参数, 和dbscan一样, 也有一些经验公式可以参考, 比如 &lt;a href=&quot;https://en.wikipedia.org/wiki/Akaike_information_criterion&quot;&gt;AIC&lt;/a&gt; 和 &lt;a href=&quot;https://en.wikipedia.org/wiki/Bayesian_information_criterion&quot;&gt;BIC&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;%E5%B0%8F%E7%BB%93&quot;&gt;小结 &lt;a class=&quot;direct-link&quot; href=&quot;#%E5%B0%8F%E7%BB%93&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;GMM 是 K-means的加强版, 额外考虑到了数据簇内部分布不均的情况&lt;/p&gt;
+
+			
+		</content>
+	</entry>
+	
+	<entry>
 		<title>围棋的启发</title>
 		<link href="https://skadai.github.io/posts/go/"/>
 		<updated>2021-08-22T00:00:00-00:00</updated>
@@ -429,6 +476,25 @@ DBSCAN的作者在原有模型的基础上提出了 GDBSCAN （参数选择都�
 &lt;p&gt;脱先: 脱先是围棋的术语, 一般是说当对手走了一步棋, 你置之不理, 直接到棋盘另外一个地方行棋了, 这很有意思, 围棋又叫做手谈, 就如同别人在给你讲话, 你不听直接开始说自己的东西, 这在现实中往往还需要一些过渡转场, 把话题引到自己比较感兴趣的环节, 现在直接就生硬的切换了, 哈哈哈. 人们常说, 选择是价值观的体现, 当选择脱先, 一定是认为棋盘上现在有比跟着行棋价值更大的地方, 我愿意把脱先看做主动思考过后的选择, 是有一种强烈的将命运把握在自己手里的欲望, 在计算清楚脱先代价之后依然选择脱先, 两个人互相博弈, 碰撞出很多各自都没有想到的变化, 其实是围棋精彩之处.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
+
+			
+		</content>
+	</entry>
+	
+	<entry>
+		<title>围棋的启发2</title>
+		<link href="https://skadai.github.io/posts/go_talk/"/>
+		<updated>2021-12-05T00:00:00-00:00</updated>
+		<id>https://skadai.github.io/posts/go_talk/</id>
+		<content type="html">
+		  &lt;p&gt;时间又过了三个多月， 来到了 8k 水平， 开始比较关注厚势了。 今天想要说的就是关注外势和实地的问题。&lt;/p&gt;
+&lt;p&gt;围棋是一个围空的游戏，当棋局结束的时候哪一方在棋盘上围到的空大，谁就获胜。那常规的思路肯定是尽量早的把好围的地盘先围住，对应棋盘上的四个角，然后是四条边，最后是中间的腹地。等到比较好围的实空都守得结结实实了，再去对方的大本营里面搞事情，俗称“先捞后洗”。&lt;/p&gt;
+&lt;p&gt;我也采用过先捞后洗的战术，不过经常遇到的问题就是捞完了，发现别人也已经结结实实了，完全洗不动，孤军深入对方大本营之后一不小心被杀死一条小龙，整盘再无翻身机会。所以说，围空的同时还需要考虑未来的发展性，因此一般不会说连续花很多手棋把一个地方完全彻底的围住，因为这样就会被对手在其他多处提前布下兵力，导致其他地区的战斗失败。&lt;/p&gt;
+&lt;p&gt;外势和实地的权衡一直来都是非常重要的，就好像是你看中现在的确定的1万块，还是看重未来的一定概率的2万块？不要简单的觉得看重眼前的利益就是目前短浅，毕竟未来的东西是有很大不确定性的, 眼前的东西不珍惜把握, 一味想着未来到头来可能是一场空。&lt;/p&gt;
+&lt;p&gt;这种选择题真的很难做，所以成年人的选择当然是我全要哈哈哈！！从围棋上来说，实地和外势其实是一种需要权衡的东西，实战中都需要进行关注，但具体到一个局部可能选择就是实地，或者就是外势，但是不管选择是什么，选择之前需要考虑目前的获利，后续发展的一些可能性，尽量挑选不那么差的选择就好了，即使是职业高手也只能算到几十步之后的棋，所以没有人可能十全十美的考虑到所有情况，尽人事即可。&lt;/p&gt;
+&lt;p&gt;一旦选择了，就要一以贯之的执行，最最忌讳的就是短时间内来回切换战术，最后一定是啥也没捞到，在实际对战中，对手会想尽办法下出一些难题让我们来选择，一步棋没有看清中了圈套，可能四五手棋下来，自己的胜率就已经下降蛮多了。一种很常见的圈套就是引诱你偏离你的大的战略，比如对手意识到你一开始的策略是实地，那么可能会在外面疯狂挑逗，碰一下，靠一下，就是想要让你上头去中间交战，那么他就可以钻到你的实地里面破的一干二净，这个时候一是坚持住既有战略，二是敏锐的捕捉对手的漏洞，才能保证局势是朝着对自己有利的情况发展。&lt;/p&gt;
+&lt;p&gt;在实际工作中，这样那样的突发事件，很容易就会打乱既有的工作节奏，此时真的是要好好想一想&lt;br&gt;
+最开始选定的策略是什么了，重要的东西不会太多，紧急的事情有时候并不那么紧急。&lt;/p&gt;
 
 			
 		</content>
