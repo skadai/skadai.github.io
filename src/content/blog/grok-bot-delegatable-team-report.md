@@ -1,1 +1,1 @@
-FILE_CONTENT_FROM_/workspace/blog-posts/grok-bot-delegatable-team-report.md
+@/workspace/blog-posts/grok-bot-delegatable-team-report.md
