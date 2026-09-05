@@ -46,6 +46,7 @@ const withBase = (path: string) => `${base}${path.replace(/^\/+/, '')}`;
       <a class="brand" href={withBase('/')}>Chengshu</a>
       <nav aria-label="主导航">
         <a href={withBase('/')}>文章</a>
+        <a href={withBase('/tags/')}>标签</a>
         <a href={withBase('/about/')}>关于</a>
       </nav>
     </header>

@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getAllTags, getPostsByTag, postPath, tagPath } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const tags = await getAllTags();
+  return tags.map(({ tag }) => ({
+    params: { tag },
+    props: { tag },
+  }));
+}
+
+interface Props {
+  tag: string;
+}
+
+const { tag } = Astro.props;
+const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
+const posts = await getPostsByTag(tag);
+
+const formatDate = (date: Date) => new Intl.DateTimeFormat('zh-CN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(date);
+---
+
+<BaseLayout title={`标签：${tag} · Chengshu`} description={`带「${tag}」标签的文章。`}>
+  <p class="crumb">
+    <a href={tagPath('', base).replace(/\/$/, '') + '/'}>← 全部标签</a>
+  </p>
+
+  <section class="hero">
+    <p class="eyebrow">标签</p>
+    <h1>{tag}</h1>
+    <p class="intro">{posts.length} 篇文章</p>
+  </section>
+
+  <div class="post-list">
+    {posts.map((post) => (
+      <article>
+        <p class="date">
+          <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+        </p>
+        <h3><a href={postPath(post, base)}>{post.data.title}</a></h3>
+        {post.data.description && <p>{post.data.description}</p>}
+        {(post.data.tags?.length ?? 0) > 0 && (
+          <ul class="tags">
+            {post.data.tags!.map((t) => (
+              <li><a href={tagPath(t, base)}>{t}</a></li>
+            ))}
+          </ul>
+        )}
+        <a class="read-more" href={postPath(post, base)}>阅读全文 →</a>
+      </article>
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .crumb { margin-bottom: 1.5rem; }
+  .crumb a { color: #666; font-size: .95rem; text-decoration: none; }
+  .hero { padding-bottom: 1.5rem; }
+  .eyebrow, .date { color: #777; font-size: .82rem; letter-spacing: .06em; }
+  h1 { margin: .5rem 0 .75rem; }
+  .intro { color: #666; }
+  article { padding-block: 1.75rem; border-top: 1px solid #eee; }
+  article h3 { margin: .25rem 0 .5rem; font-size: 1.75rem; }
+  article h3 a { text-decoration: none; }
+  article h3 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+  article p { max-width: 38rem; }
+  .tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+    margin: .75rem 0 0;
+    padding: 0;
+  }
+  .tags a {
+    display: inline-block;
+    padding: .15rem .55rem;
+    border-radius: 999px;
+    background: #f0f0f0;
+    color: #444;
+    font-size: .85rem;
+    text-decoration: none;
+  }
+  .tags a:hover { background: #e4e4e4; }
+  .read-more { display: inline-block; margin-top: .5rem; color: #333; font-weight: 700; text-decoration: none; }
+</style>

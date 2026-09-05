@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getAllTags, tagPath } from '../../lib/posts';
+
+const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
+const tags = await getAllTags();
+---
+
+<BaseLayout title="标签 · Chengshu" description="按标签浏览文章。">
+  <section class="hero">
+    <p class="eyebrow">标签</p>
+    <h1>按主题浏览</h1>
+    <p class="intro">从 frontmatter 的 <code>tags</code> 字段汇总，点击即可过滤文章。</p>
+  </section>
+
+  {tags.length === 0 ? (
+    <p class="empty">还没有带标签的文章。在 Markdown frontmatter 里加上 <code>tags: ["示例"]</code> 即可。</p>
+  ) : (
+    <ul class="tag-cloud" aria-label="全部标签">
+      {tags.map(({ tag, count }) => (
+        <li>
+          <a href={tagPath(tag, base)}>
+            <span class="name">{tag}</span>
+            <span class="count">{count}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )}
+</BaseLayout>
+
+<style>
+  .hero { padding-bottom: 2.5rem; }
+  .eyebrow { color: #777; font-size: .82rem; letter-spacing: .06em; }
+  h1 { margin: .75rem 0 1rem; }
+  .intro { max-width: 36rem; color: #666; font-size: 1.05rem; }
+  .intro code, .empty code {
+    font-size: .92em;
+    background: #f0f0f0;
+    padding: .1em .35em;
+    border-radius: 4px;
+  }
+  .empty { color: #666; }
+  .tag-cloud {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+  }
+  .tag-cloud a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: .45rem;
+    padding: .45rem .85rem;
+    border: 1px solid #e5e5e5;
+    border-radius: 999px;
+    text-decoration: none;
+    background: #fff;
+  }
+  .tag-cloud a:hover { border-color: #bbb; }
+  .name { font-weight: 600; }
+  .count { color: #888; font-size: .85rem; }
+</style>

@@ -1,10 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+import { getPublishedPosts, postPath, tagPath } from '../lib/posts';
 
 const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
-const posts = (await getCollection('blog', ({ data }) => data.draft === false))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const posts = await getPublishedPosts();
 
 const formatDate = (date: Date) => new Intl.DateTimeFormat('zh-CN', {
   year: 'numeric',
@@ -21,16 +20,26 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat('zh-CN', {
   </section>
 
   <section aria-labelledby="latest">
-    <h2 id="latest">最近文章</h2>
+    <div class="section-head">
+      <h2 id="latest">最近文章</h2>
+      <a class="all-tags" href={`${base}tags/`}>全部标签 →</a>
+    </div>
     <div class="post-list">
       {posts.map((post) => (
         <article>
           <p class="date">
             <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
           </p>
-          <h3><a href={`${base}posts/${post.data.slug ?? post.id}/`}>{post.data.title}</a></h3>
+          <h3><a href={postPath(post, base)}>{post.data.title}</a></h3>
           {post.data.description && <p>{post.data.description}</p>}
-          <a class="read-more" href={`${base}posts/${post.data.slug ?? post.id}/`}>阅读全文 →</a>
+          {(post.data.tags?.length ?? 0) > 0 && (
+            <ul class="tags">
+              {post.data.tags!.map((tag) => (
+                <li><a href={tagPath(tag, base)}>{tag}</a></li>
+              ))}
+            </ul>
+          )}
+          <a class="read-more" href={postPath(post, base)}>阅读全文 →</a>
         </article>
       ))}
     </div>
@@ -42,11 +51,39 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat('zh-CN', {
   .eyebrow, .date { color: #777; font-size: .82rem; letter-spacing: .06em; }
   h1 { margin: .75rem 0 1.25rem; }
   .intro { max-width: 36rem; color: #666; font-size: 1.2rem; }
-  #latest { padding-bottom: .75rem; border-bottom: 1px solid #e5e5e5; }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: .75rem;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  .section-head h2 { margin: 0; }
+  .all-tags { color: #666; font-size: .95rem; text-decoration: none; white-space: nowrap; }
+  .all-tags:hover { color: #111; }
   article { padding-block: 1.75rem; }
   article h3 { margin: .25rem 0 .5rem; font-size: 1.75rem; }
   article h3 a { text-decoration: none; }
   article h3 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
   article p { max-width: 38rem; }
+  .tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+    margin: .75rem 0 0;
+    padding: 0;
+  }
+  .tags a {
+    display: inline-block;
+    padding: .15rem .55rem;
+    border-radius: 999px;
+    background: #f0f0f0;
+    color: #444;
+    font-size: .85rem;
+    text-decoration: none;
+  }
+  .tags a:hover { background: #e4e4e4; }
   .read-more { display: inline-block; margin-top: .5rem; color: #333; font-weight: 700; text-decoration: none; }
 </style>
