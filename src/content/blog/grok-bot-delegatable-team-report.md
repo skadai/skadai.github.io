@@ -1,1 +1,1 @@
-PLACEHOLDER_LOAD_FROM_FILE
+FILE_CONTENT_FROM_/workspace/blog-posts/grok-bot-delegatable-team-report.md
