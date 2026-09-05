@@ -27,7 +27,7 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat('zh-CN', {
 
 <BaseLayout title={`标签：${tag} · Chengshu`} description={`带「${tag}」标签的文章。`}>
   <p class="crumb">
-    <a href={tagPath('', base).replace(/\/$/, '') + '/'}>← 全部标签</a>
+    <a href={`${base}tags/`}>← 全部标签</a>
   </p>
 
   <section class="hero">
