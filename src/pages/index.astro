@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
+const posts = (await getCollection('blog', ({ data }) => data.draft === false))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const formatDate = (date: Date) => new Intl.DateTimeFormat('zh-CN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(date);
+---
+
+<BaseLayout title="Chengshu" description="关于设计、技术与日常观察的个人笔记。">
+  <section class="hero">
+    <p class="eyebrow">个人写作</p>
+    <h1>认真生活，<br />缓慢记录。</h1>
+    <p class="intro">关于设计、技术，以及日常里值得被记住的小事。</p>
+  </section>
+
+  <section aria-labelledby="latest">
+    <h2 id="latest">最近文章</h2>
+    <div class="post-list">
+      {posts.map((post) => (
+        <article>
+          <p class="date">
+            <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+          </p>
+          <h3><a href={`${base}posts/${post.data.slug ?? post.id}/`}>{post.data.title}</a></h3>
+          {post.data.description && <p>{post.data.description}</p>}
+          <a class="read-more" href={`${base}posts/${post.data.slug ?? post.id}/`}>阅读全文 →</a>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero { padding-bottom: 4rem; }
+  .eyebrow, .date { color: #777; font-size: .82rem; letter-spacing: .06em; }
+  h1 { margin: .75rem 0 1.25rem; }
+  .intro { max-width: 36rem; color: #666; font-size: 1.2rem; }
+  #latest { padding-bottom: .75rem; border-bottom: 1px solid #e5e5e5; }
+  article { padding-block: 1.75rem; }
+  article h3 { margin: .25rem 0 .5rem; font-size: 1.75rem; }
+  article h3 a { text-decoration: none; }
+  article h3 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+  article p { max-width: 38rem; }
+  .read-more { display: inline-block; margin-top: .5rem; color: #333; font-weight: 700; text-decoration: none; }
+</style>

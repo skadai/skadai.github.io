@@ -1,0 +1,129 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'Chengshu 的个人写作空间。',
+} = Astro.props;
+
+const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
+const withBase = (path: string) => `${base}${path.replace(/^\/+/, '')}`;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Chengshu RSS"
+      href={withBase('/rss.xml')}
+    />
+    <link
+      rel="alternate"
+      type="application/feed+json"
+      title="Chengshu JSON Feed"
+      href={withBase('/feed.json')}
+    />
+    <link
+      rel="alternate"
+      type="application/json"
+      title="Chengshu Posts JSON"
+      href={withBase('/posts.json')}
+    />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href={withBase('/')}>Chengshu</a>
+      <nav aria-label="主导航">
+        <a href={withBase('/')}>文章</a>
+        <a href={withBase('/about/')}>关于</a>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer>
+      <p>© {new Date().getFullYear()} Chengshu</p>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    color-scheme: light;
+    font-family: Inter, "PingFang SC", "Noto Sans CJK SC", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+    color: #202020;
+    background: #fafafa;
+    font-synthesis: none;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    line-height: 1.65;
+  }
+
+  a { color: inherit; }
+
+  .site-header,
+  main,
+  footer {
+    width: min(100% - 2rem, 720px);
+    margin-inline: auto;
+  }
+
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 1.5rem;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .brand {
+    letter-spacing: .02em;
+    font-size: 1.15rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  nav { display: flex; gap: 1.25rem; }
+  nav a { color: #666; font-size: .95rem; text-decoration: none; }
+  nav a:hover { color: #111; }
+
+  main { padding-block: 4rem; }
+
+  h1, h2, h3 {
+    font-family: "Songti SC", "Noto Serif CJK SC", Georgia, serif;
+    line-height: 1.15;
+  }
+
+  h1 { font-size: clamp(2.5rem, 8vw, 4.75rem); letter-spacing: -.04em; }
+  h2 { font-size: 1.55rem; }
+
+  footer {
+    padding-block: 2rem;
+    border-top: 1px solid #e5e5e5;
+    color: #777;
+    font-size: .9rem;
+  }
+
+  @media (max-width: 520px) {
+    .site-header { align-items: flex-start; }
+    main { padding-block: 2.75rem; }
+  }
+</style>

@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="关于 · Chengshu" description="关于 Chengshu 和这个网站。">
+  <p class="eyebrow">关于</p>
+  <h1>互联网的一处小角落。</h1>
+  <div class="copy">
+    <p>这里是 Chengshu 的个人写作空间，用来收集短文、观察和偶然发现。</p>
+    <p>网站使用 Astro 构建。新的 Markdown 文章放在 <code>src/pages/posts</code> 目录中。</p>
+  </div>
+</BaseLayout>
+
+<style>
+  .eyebrow { color: #777; font-size: .82rem; letter-spacing: .06em; }
+  h1 { max-width: 40rem; margin: .75rem 0 2rem; }
+  .copy { max-width: 38rem; font-size: 1.1rem; }
+  code { padding: .15rem .35rem; border-radius: .25rem; background: #eee; font-size: .9em; }
+</style>
