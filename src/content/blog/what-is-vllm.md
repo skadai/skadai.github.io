@@ -20,7 +20,7 @@ source: "https://www.youtube.com/watch?v=McLdlg5Gc9s"
 
 vLLM 源自 UC Berkeley，是面向大模型**推理服务**的开源运行时：用 **PagedAttention** 分页管理 KV cache，用 **continuous batching** 提高 GPU 利用率，并支持量化、工具调用与多种主流模型架构。论文口径相对 Hugging Face Transformers / TGI 可有约 **24×** 吞吐提升。可用 `pip install vLLM`，以兼容 OpenAI API 的方式在 VM / Kubernetes 上部署。
 
-![视频开场：IBM Technology 主持人 Cedric Clyburn（Red Hat）](/blog/youtube/McLdlg5Gc9s/frame_01.jpg)
+![视频开场：IBM Technology 主持人 Cedric Clyburn（Red Hat）](/blog/youtube/McLdlg5Gc9s/frame_01.svg)
 
 ## 为什么 LLM 服务这么难
 
@@ -31,7 +31,7 @@ vLLM 源自 UC Berkeley，是面向大模型**推理服务**的开源运行时�
   2. **延迟与批处理瓶颈**：用户越多越慢，静态 batch 难以吃满 GPU。
   3. **扩展复杂**：单卡显存/算力不够时，要上分布式，overhead 与运维复杂度上升。
 
-![白板对比 LLM 与 vLLM：推理负载](/blog/youtube/McLdlg5Gc9s/frame_02.jpg)
+![白板对比 LLM 与 vLLM：推理负载](/blog/youtube/McLdlg5Gc9s/frame_02.svg)
 
 ## vLLM 从哪来、解决什么
 
@@ -44,7 +44,7 @@ vLLM 源自 UC Berkeley，是面向大模型**推理服务**的开源运行时�
 
 ### PagedAttention（分页注意力）
 
-![白板讲解：内存、延迟与扩展是 LLM 推理的三个瓶颈](/blog/youtube/McLdlg5Gc9s/frame_03.jpg)
+![白板讲解：内存、延迟与扩展是 LLM 推理的三个瓶颈](/blog/youtube/McLdlg5Gc9s/frame_03.svg)
 
 - 管理生成下一 token 所需的 **attention keys/values（KV cache）**。
 - 不再把 KV 占成一大块连续显存，而是切成可管理的「页」，按需访问——类似操作系统的虚拟内存分页。
@@ -55,14 +55,14 @@ vLLM 源自 UC Berkeley，是面向大模型**推理服务**的开源运行时�
 - 不是流水线式「一个接一个」处理请求。
 - 请求完成后立刻把空出来的 GPU slot 填给新序列，尽量让算力一直满载。
 
-![讲解 continuous batching 时的视频画面](/blog/youtube/McLdlg5Gc9s/frame_04.jpg)
+![讲解 continuous batching 时的视频画面](/blog/youtube/McLdlg5Gc9s/frame_04.svg)
 
 ### 其他优化
 
 - 针对 CUDA / 具体硬件的 serving 优化。
 - 对**量化/压缩模型**友好：省显存的同时尽量保精度。
 
-![白板上的 PagedAttention：KV cache 分页与 CUDA 调度](/blog/youtube/McLdlg5Gc9s/frame_05.jpg)
+![白板上的 PagedAttention：KV cache 分页与 CUDA 调度](/blog/youtube/McLdlg5Gc9s/frame_05.svg)
 
 ## 怎么用（视频口径）
 
