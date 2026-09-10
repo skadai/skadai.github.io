@@ -123,6 +123,12 @@ const withBase = (path: string) => `${base}${path.replace(/^\/+/, '')}`;
     font-size: .9rem;
   }
 
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+  }
+
   @media (max-width: 520px) {
     .site-header { align-items: flex-start; }
     main { padding-block: 2.75rem; }
