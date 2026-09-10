@@ -1,0 +1,42 @@
+name: Assemble vLLM SVG frames
+on:
+  push:
+    paths:
+      - 'public/blog/youtube/McLdlg5Gc9s/_parts/**'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assemble SVGs from parts
+        run: |
+          set -euo pipefail
+          PARTS=public/blog/youtube/McLdlg5Gc9s/_parts
+          OUT=public/blog/youtube/McLdlg5Gc9s
+          for n in 01 02 03 05; do
+            shopt -s nullglob
+            parts=("$PARTS"/frame_${n}.svg.part*)
+            if [ ${#parts[@]} -eq 0 ]; then
+              echo "No parts for frame_$n"
+              continue
+            fi
+            mapfile -t sorted < <(printf '%s\n' "${parts[@]}" | sort)
+            cat "${sorted[@]}" > "$OUT/frame_${n}.svg"
+            echo "Assembled frame_${n}.svg ($(wc -c < "$OUT/frame_${n}.svg") bytes)"
+            rm -f "${sorted[@]}"
+          done
+          rmdir "$PARTS" 2>/dev/null || true
+      - name: Commit assembled SVGs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "Assemble vLLM SVG-wrapped frames from parts"
+            git push
+          fi
