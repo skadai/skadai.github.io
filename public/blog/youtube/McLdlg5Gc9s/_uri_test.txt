@@ -1,0 +1,1 @@
+file:///tmp/vllm-svg-small/frame_04.svg
