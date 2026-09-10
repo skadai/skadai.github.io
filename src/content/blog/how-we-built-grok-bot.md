@@ -15,6 +15,19 @@ source: "https://www.youtube.com/watch?v=maSdsTLaMuU"
 来源：[YouTube 原视频](https://www.youtube.com/watch?v=maSdsTLaMuU)（Lenny's Podcast · Roman Ugarte）
 
 
+<div class="video-embed">
+  <iframe
+    src="https://www.youtube.com/embed/maSdsTLaMuU"
+    title="How we built Grok Bot in a month | Roman Ugarte (SpaceXAI)"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen
+    loading="lazy"
+    referrerpolicy="strict-origin-when-cross-origin"
+  ></iframe>
+</div>
+
+
+
 > **来源说明**
 > 本文根据 YouTube 英文自动字幕整理。Kimi WebBridge 在页面中发现并确认了 `en` 自动字幕轨道，因 YouTube 页面字幕面板未正常显示，最终用 yt-dlp 将同一字幕资源保存为 VTT，再整理成可读文本。文中关于产品效果、公司文化和竞争格局的判断，均按主持人 Lenny Rachitsky 与受访者 Roman Ugarte 的表述归纳，未作独立验证；自动字幕偶有将 “Grok Bot” 识别为相近拼写的情况，本文已按正式名称统一。
 
