@@ -1,5 +1,5 @@
 ---
-title: "Stanford MS&E435：Stanford MS&E435：Applications, Applied A… | Tuhin / Baseten"
+title: "Stanford MS&E435：Applications, Applied AI——从 Baseten 看推理经济"
 description: "Tuhin 将推理视为 AI 产品交付价值时持续发生的成本项。Baseten 的定位，是把模型优化、部署、跨云容量、可靠性、可观测性和安全能力打包成生产平台。"
 pubDate: 2026-06-05
 updatedDate: 2026-09-10
@@ -17,7 +17,7 @@ source: "https://www.youtube.com/watch?v=Qh7Oxvo5sJI"
 <div class="video-embed">
   <iframe
     src="https://www.youtube.com/embed/Qh7Oxvo5sJI"
-    title="Stanford MS&E435：Stanford MS&E435：Applications, Applied A… | Tuhin / Baseten"
+    title="Stanford MS&E435：Applications, Applied AI——从 Baseten 看推理经济"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
     allowfullscreen
     loading="lazy"
