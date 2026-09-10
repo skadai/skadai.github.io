@@ -11,24 +11,33 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Assemble SVGs from parts
+      - name: Assemble SVGs from parts (only when complete)
+        shell: bash
         run: |
           set -euo pipefail
           PARTS=public/blog/youtube/McLdlg5Gc9s/_parts
           OUT=public/blog/youtube/McLdlg5Gc9s
+          declare -A NEED=([01]=4 [02]=4 [03]=5 [05]=5)
+          assembled=0
           for n in 01 02 03 05; do
             shopt -s nullglob
             parts=("$PARTS"/frame_${n}.svg.part*)
-            if [ ${#parts[@]} -eq 0 ]; then
-              echo "No parts for frame_$n"
+            need=${NEED[$n]}
+            if [ ${#parts[@]} -lt "$need" ]; then
+              echo "frame_$n: have ${#parts[@]}/$need parts - skip"
               continue
             fi
             mapfile -t sorted < <(printf '%s\n' "${parts[@]}" | sort)
             cat "${sorted[@]}" > "$OUT/frame_${n}.svg"
-            echo "Assembled frame_${n}.svg ($(wc -c < "$OUT/frame_${n}.svg") bytes)"
+            echo "Assembled frame_${n}.svg ($(wc -c < "$OUT/frame_${n}.svg") bytes) from ${#sorted[@]} parts"
             rm -f "${sorted[@]}"
+            assembled=$((assembled+1))
           done
-          rmdir "$PARTS" 2>/dev/null || true
+          if [ "$assembled" -eq 0 ]; then
+            echo "Nothing complete yet; leaving parts in place"
+          else
+            rmdir "$PARTS" 2>/dev/null || true
+          fi
       - name: Commit assembled SVGs
         run: |
           git config user.name "github-actions[bot]"
