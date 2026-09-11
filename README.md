@@ -32,6 +32,11 @@ npm run dev
 
 首页和文章路由只会读取 `draft: false` 的内容；标记为 `draft: true` 的草稿不会出现在列表中，也不会生成公开页面。
 
+## 搜索与订阅
+
+- 站内搜索：`/search/`，按文章标题（大小写不敏感、支持中文子串）过滤，数据来自构建产物 `posts.json`；可用 `?q=关键词` 直接分享结果链接。
+- 订阅：RSS 位于 `/rss.xml`，JSON Feed 位于 `/feed.json`，两个地址都在页面 `<head>` 里声明了 `<link rel="alternate">`，页脚也提供了入口。
+
 ## GitHub Pages 部署
 
 `astro.config.mjs` 已配置站点地址 `https://skadai.github.io` 与根路径 `base: '/'`。工作流位于 `.github/workflows/deploy.yml`，推送到 `main` 分支后会自动构建并部署到 GitHub Pages；也可以在 Actions 页面手动触发。

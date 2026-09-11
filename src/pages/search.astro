@@ -1,0 +1,238 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
+const postsUrl = `${base}posts.json`;
+---
+
+<BaseLayout title="搜索 · Chengshu" description="按标题搜索 Chengshu 的文章。">
+  <section class="search">
+    <p class="eyebrow">搜索</p>
+    <h1>按名字找文章。</h1>
+
+    <form class="search-form" role="search" data-posts-url={postsUrl}>
+      <label class="sr-only" for="q">文章标题关键词</label>
+      <input
+        id="q"
+        name="q"
+        type="search"
+        placeholder="输入文章标题…"
+        autocomplete="off"
+        autofocus
+      />
+      <button type="submit">搜索</button>
+    </form>
+
+    <p class="status" data-status aria-live="polite"></p>
+    <ul class="results" data-results></ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .eyebrow { color: #777; font-size: .82rem; letter-spacing: .06em; }
+  h1 { max-width: 40rem; margin: .75rem 0 2rem; }
+  .search-form {
+    display: flex;
+    gap: .5rem;
+    max-width: 38rem;
+  }
+  .search-form input {
+    flex: 1;
+    min-width: 0;
+    padding: .65rem .8rem;
+    border: 1px solid #d5d5d5;
+    border-radius: 6px;
+    background: #fff;
+    color: inherit;
+    font: inherit;
+  }
+  .search-form input:focus { outline: 2px solid #888; outline-offset: 1px; }
+  .search-form button {
+    padding: .65rem 1.1rem;
+    border: 0;
+    border-radius: 6px;
+    background: #202020;
+    color: #fafafa;
+    font: inherit;
+    cursor: pointer;
+  }
+  .search-form button:hover { background: #3a3a3a; }
+  .status { max-width: 38rem; margin: 1.25rem 0 0; color: #777; font-size: .95rem; }
+  .results {
+    list-style: none;
+    max-width: 38rem;
+    margin: 1.5rem 0 0;
+    padding: 0;
+  }
+  .results li { padding-block: 1.25rem; border-top: 1px solid #e5e5e5; }
+  .results h2 { margin: 0 0 .35rem; font-size: 1.3rem; }
+  .results h2 a { text-decoration: none; }
+  .results h2 a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .results p { margin: 0; color: #666; }
+  .results time { color: #777; font-size: .82rem; letter-spacing: .06em; }
+  .results mark { padding: 0 .1em; background: #ffe9a8; color: inherit; }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
+
+<script>
+  interface PostEntry {
+    slug: string;
+    title: string;
+    description: string;
+    pubDate: string;
+    tags: string[];
+    url: string;
+  }
+
+  const form = document.querySelector<HTMLFormElement>('.search-form');
+  const input = document.querySelector<HTMLInputElement>('#q');
+  const status = document.querySelector<HTMLParagraphElement>('[data-status]');
+  const list = document.querySelector<HTMLUListElement>('[data-results]');
+
+  if (form && input && status && list) {
+    const postsUrl = form.dataset.postsUrl ?? '/posts.json';
+    const formatter = new Intl.DateTimeFormat('zh-CN', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+
+    let posts: PostEntry[] = [];
+    let loaded = false;
+    let failed = false;
+
+    const normalize = (value: string) => value.trim().toLowerCase();
+
+    const setStatus = (message: string) => {
+      status.textContent = message;
+    };
+
+    const highlight = (title: string, query: string): string => {
+      const index = normalize(title).indexOf(normalize(query));
+      if (index < 0 || !query.trim()) return escapeHtml(title);
+      const end = index + query.trim().length;
+      return (
+        escapeHtml(title.slice(0, index)) +
+        '<mark>' +
+        escapeHtml(title.slice(index, end)) +
+        '</mark>' +
+        escapeHtml(title.slice(end))
+      );
+    };
+
+    const escapeHtml = (value: string) =>
+      value
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+
+    const formatDate = (value: string) => {
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? '' : formatter.format(date);
+    };
+
+    const render = () => {
+      list.innerHTML = '';
+
+      if (failed) {
+        setStatus('文章列表加载失败，请稍后重试。');
+        return;
+      }
+
+      const query = normalize(input.value);
+
+      if (!query) {
+        setStatus(
+          loaded
+            ? `共 ${posts.length} 篇文章，输入标题关键词开始搜索。`
+            : '正在加载文章…',
+        );
+        return;
+      }
+
+      const matches = posts.filter((post) => normalize(post.title).includes(query));
+      if (matches.length === 0) {
+        setStatus(`没有找到标题包含「${input.value.trim()}」的文章。`);
+        return;
+      }
+
+      setStatus(`找到 ${matches.length} 篇文章。`);
+      for (const post of matches) {
+        const item = document.createElement('li');
+        const heading = document.createElement('h2');
+        const link = document.createElement('a');
+        link.href = post.url;
+        link.innerHTML = highlight(post.title, input.value);
+        heading.append(link);
+        item.append(heading);
+
+        const date = formatDate(post.pubDate);
+        const meta = document.createElement('time');
+        meta.dateTime = post.pubDate;
+        meta.textContent = date;
+
+        if (post.description) {
+          const description = document.createElement('p');
+          description.textContent = post.description;
+          item.append(meta, description);
+        } else {
+          item.append(meta);
+        }
+
+        list.append(item);
+      }
+    };
+
+    const syncUrl = () => {
+      const url = new URL(window.location.href);
+      if (input.value.trim()) {
+        url.searchParams.set('q', input.value.trim());
+      } else {
+        url.searchParams.delete('q');
+      }
+      window.history.replaceState(null, '', url);
+    };
+
+    const load = async () => {
+      try {
+        const response = await fetch(postsUrl);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = (await response.json()) as { posts?: PostEntry[] };
+        posts = data.posts ?? [];
+        loaded = true;
+      } catch (error) {
+        failed = true;
+        setStatus('文章列表加载失败，请稍后重试。');
+        return;
+      }
+      render();
+    };
+
+    const initial = new URLSearchParams(window.location.search).get('q');
+    if (initial) input.value = initial;
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      syncUrl();
+      render();
+    });
+    input.addEventListener('input', () => {
+      syncUrl();
+      render();
+    });
+
+    render();
+    void load();
+  }
+</script>
