@@ -78,6 +78,18 @@ if (tags.length) jsonLd.keywords = tags.join(', ');
     </header>
     <div class="content"><slot /></div>
   </article>
+
+  <script>
+    // X / Twitter 内嵌：只在本页真的用到时才加载官方 widget，
+    // 避免所有文章都背上第三方脚本。
+    if (document.querySelector('.video-embed-x')) {
+      const s = document.createElement('script');
+      s.src = 'https://platform.twitter.com/widgets.js';
+      s.async = true;
+      s.charset = 'utf-8';
+      document.head.appendChild(s);
+    }
+  </script>
 </BaseLayout>
 
 <style>
@@ -120,6 +132,36 @@ if (tags.length) jsonLd.keywords = tags.join(', ');
     width: 100%;
     height: 100%;
     border: 0;
+  }
+
+  /* X / Twitter 内嵌：官方 widget 自带尺寸，不套 16:9 容器 */
+  .content :global(.video-embed-x) {
+    display: flex;
+    justify-content: center;
+    margin: 1.5rem 0 2rem;
+  }
+  .content :global(.video-embed-x .twitter-tweet) { margin-inline: auto; }
+
+  /* 自托管视频：<video controls> 原生播放，不依赖任何第三方 */
+  .content :global(.video-local) { margin: 1.5rem 0 2rem; }
+  .content :global(.video-local video) {
+    display: block;
+    width: 100%;
+    border-radius: 12px;
+    background: #111;
+  }
+
+  .content :global(.video-embed figcaption),
+  .content :global(.video-local figcaption) {
+    margin-top: .55rem;
+    color: #777;
+    font-size: .9rem;
+  }
+  .content :global(.video-fallback) {
+    display: block;
+    margin-top: .6rem;
+    color: #666;
+    font-size: .9rem;
   }
 
   .content :global(h2) { margin-top: 2.5rem; }
