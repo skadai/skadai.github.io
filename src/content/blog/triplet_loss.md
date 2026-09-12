@@ -5,7 +5,7 @@ pubDate: 2021-08-17
 slug: "triplet_loss"
 tags: ["tech", "CBIR"]
 status: published
-draft: false
+draft: true
 published: true
 source: skadai.github.io
 ---

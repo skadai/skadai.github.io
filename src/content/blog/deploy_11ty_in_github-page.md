@@ -5,7 +5,7 @@ pubDate: 2021-07-31
 slug: "deploy_11ty_in_github-page"
 tags: ["tech"]
 status: published
-draft: false
+draft: true
 published: true
 source: skadai.github.io
 ---

@@ -5,7 +5,7 @@ pubDate: 2021-08-19
 slug: "gaussion_mixture"
 tags: ["tech", "clustering"]
 status: published
-draft: false
+draft: true
 published: true
 source: skadai.github.io
 ---
