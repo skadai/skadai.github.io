@@ -13,7 +13,7 @@ source: "https://x.com/dongxi_nlp/status/2098945504289669481"
 author: "Dongxi 东锡 NLP (@dongxi_nlp)"
 ---
 
-来源：[X Article · Dongxi 东锡 NLP (@dongxi_nlp)](https://x.com/dongxi_nlp/article/2098945504289669481)（帖子：https://x.com/dongxi_nlp/status/2098945504289669481）
+来源：[X Article · Dongxi 东锡 NLP (@dongxi_nlp)](https://x.com/dongxi_nlp/article/2098945504289669481)（[原帖](https://x.com/dongxi_nlp/status/2098945504289669481)）
 
 > **转载说明**
 > 本文转载自 Dongxi 东锡 NLP（@dongxi_nlp）的 X Article，仅作学习分享，版权归原作者所有。原文含动画/示意图，本站以文字说明为主；完整图示请看原帖。
