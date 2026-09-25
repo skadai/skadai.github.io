@@ -34,6 +34,10 @@ const toDate = (value: Date | string | undefined): Date | undefined => {
 
 const pubDate = toDate(frontmatter.pubDate) ?? toDate(frontmatter.date);
 const updatedDate = toDate(frontmatter.updatedDate);
+const showUpdated = updatedDate != null && pubDate != null && updatedDate.valueOf() > pubDate.valueOf();
+const updatedLabel = showUpdated
+  ? new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' }).format(updatedDate!)
+  : undefined;
 const isoPublished = pubDate?.toISOString();
 const isoModified = updatedDate?.toISOString();
 
@@ -76,6 +80,11 @@ if (tags.length) jsonLd.keywords = tags.join(', ');
           frontmatter.date
         )}
       </p>
+      {updatedLabel && (
+        <p class="updated">
+          更新于 <time datetime={isoModified}>{updatedLabel}</time>
+        </p>
+      )}
       <h1>{frontmatter.title}</h1>
       {frontmatter.description && <p class="dek">{frontmatter.description}</p>}
       {tags.length > 0 && (
@@ -115,6 +124,7 @@ if (tags.length) jsonLd.keywords = tags.join(', ');
   }
   .series-nav a { color: #222; font-weight: 600; }
   .eyebrow { margin: 3rem 0 .5rem; color: #777; font-size: .82rem; letter-spacing: .06em; }
+  .updated { margin: 0; color: #999; font-size: .78rem; letter-spacing: .06em; }
   h1 { margin: 0; font-size: clamp(2.5rem, 8vw, 4rem); }
   .dek { max-width: 38rem; color: #666; font-size: 1.15rem; }
   .tags {
