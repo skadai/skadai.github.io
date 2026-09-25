@@ -18,7 +18,7 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
 const membership = seriesMembership(post.data.slug ?? post.id, base);
 const date = new Intl.DateTimeFormat('zh-CN', {
@@ -35,6 +35,8 @@ const date = new Intl.DateTimeFormat('zh-CN', {
     pubDate: post.data.pubDate,
     updatedDate: post.data.updatedDate,
   }}
+  headings={headings}
+  body={post.body ?? ''}
   series={membership
     ? { title: membership.series.title, label: membership.label, href: membership.href }
     : undefined}

@@ -1,4 +1,5 @@
 ---
+import type { MarkdownHeading } from 'astro';
 import BaseLayout from './BaseLayout.astro';
 import { tagPath } from '../lib/posts';
 
@@ -14,6 +15,8 @@ interface Frontmatter {
 
 interface Props {
   frontmatter: Frontmatter;
+  headings?: MarkdownHeading[];
+  body?: string;
   series?: {
     title: string;
     label: string;
@@ -21,7 +24,7 @@ interface Props {
   };
 }
 
-const { frontmatter, series } = Astro.props as Props;
+const { frontmatter, headings = [], body = '', series } = Astro.props as Props;
 const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
 const tags = (frontmatter.tags ?? []).map((t) => t.trim()).filter(Boolean);
 
@@ -40,6 +43,22 @@ const updatedLabel = showUpdated
   : undefined;
 const isoPublished = pubDate?.toISOString();
 const isoModified = updatedDate?.toISOString();
+
+/* 阅读量估算：中日韩字符按 400 字/分钟，拉丁单词按 220 词/分钟 */
+const CJK = /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/g;
+const stats = (() => {
+  const text = body.replace(/```[\s\S]*?```/g, ' ');
+  const cjk = (text.match(CJK) ?? []).length;
+  const latin = (text.replace(CJK, ' ').match(/[A-Za-z0-9]+/g) ?? []).length;
+  const minutes = Math.max(1, Math.round(cjk / 400 + latin / 220));
+  const units = [];
+  if (cjk) units.push(`${cjk.toLocaleString('zh-CN')} 字`);
+  if (latin) units.push(`${latin.toLocaleString('zh-CN')} 词`);
+  units.push(`约 ${minutes} 分钟`);
+  return units.join(' · ');
+})();
+
+const toc = headings.filter((heading) => heading.depth === 2 && heading.text.trim());
 
 const absoluteUrl = Astro.site
   ? new URL(Astro.url.pathname, Astro.site).href
@@ -65,38 +84,73 @@ if (tags.length) jsonLd.keywords = tags.join(', ');
 
 <BaseLayout title={`${frontmatter.title} · Chengshu`} description={frontmatter.description}>
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
   <article class="post">
-    <a class="back" href={base}>← 返回文章</a>
-    {series && (
-      <p class="series-nav">
-        本篇属于系列 <a href={series.href}>{series.title}</a> · {series.label}
-      </p>
-    )}
-    <header>
-      <p class="eyebrow">
-        {isoPublished ? (
-          <time datetime={isoPublished}>{frontmatter.date}</time>
-        ) : (
-          frontmatter.date
+    <header class="article-head">
+      <div class="wrap">
+        <nav class="breadcrumb" aria-label="面包屑">
+          <span><a href={base}>Chengshu</a><span class="sep">/</span></span>
+          <span><a href={base}>文章</a><span class="sep">/</span></span>
+          <span>{frontmatter.title}</span>
+        </nav>
+
+        <div class="kicker-row">
+          {isoPublished ? (
+            <time datetime={isoPublished}>{frontmatter.date}</time>
+          ) : (
+            <span>{frontmatter.date}</span>
+          )}
+          <span class="sep" aria-hidden="true"></span>
+          <span>{stats}</span>
+          {updatedLabel && (
+            <>
+              <span class="sep" aria-hidden="true"></span>
+              <span class="k">更新于 <time datetime={isoModified}>{updatedLabel}</time></span>
+            </>
+          )}
+        </div>
+
+        <h1>{frontmatter.title}</h1>
+        {frontmatter.description && <p class="dek">{frontmatter.description}</p>}
+
+        {tags.length > 0 && (
+          <ul class="tags">
+            {tags.map((tag) => (
+              <li><a href={tagPath(tag, base)}>{tag}</a></li>
+            ))}
+          </ul>
         )}
-      </p>
-      {updatedLabel && (
-        <p class="updated">
-          更新于 <time datetime={isoModified}>{updatedLabel}</time>
-        </p>
-      )}
-      <h1>{frontmatter.title}</h1>
-      {frontmatter.description && <p class="dek">{frontmatter.description}</p>}
-      {tags.length > 0 && (
-        <ul class="tags">
-          {tags.map((tag) => (
-            <li><a href={tagPath(tag, base)}>{tag}</a></li>
-          ))}
-        </ul>
-      )}
+
+        {series && (
+          <p class="series-nav">
+            本篇属于系列 <a href={series.href}>{series.title}</a> · {series.label}
+          </p>
+        )}
+      </div>
     </header>
-    <div class="content"><slot /></div>
+
+    <div class={`wrap article-body-wrap${toc.length > 1 ? ' toc-right' : ''}`}>
+      <div class="prose"><slot /></div>
+
+      {toc.length > 1 && (
+        <aside class="toc toc-r" aria-label="本篇目录">
+          <h4>本篇目录</h4>
+          <ol>
+            {toc.map((heading) => (
+              <li><a href={`#${heading.slug}`}>{heading.text}</a></li>
+            ))}
+          </ol>
+        </aside>
+      )}
+    </div>
   </article>
+
+  <section class="wrap comments-section" aria-label="讨论">
+    <h2 class="comments-heading">讨论</h2>
+    <p class="comments-body">
+      这里是静态站点，没有内嵌评论区。如果这篇文章对你有用，欢迎通过 RSS 订阅后续更新。
+    </p>
+  </section>
 
   <script>
     // X / Twitter 内嵌：只在本页真的用到时才加载官方 widget，
@@ -108,92 +162,37 @@ if (tags.length) jsonLd.keywords = tags.join(', ');
       s.charset = 'utf-8';
       document.head.appendChild(s);
     }
+
+    // 目录高亮：滚动时点亮当前小节
+    const toc = document.querySelector('.toc.toc-r');
+    if (toc) {
+      const links = [...toc.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')];
+      const targets = links
+        .map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))))
+        .filter((el): el is HTMLElement => el !== null);
+
+      if (targets.length) {
+        const visible = new Set<Element>();
+        const setActive = () => {
+          const first = targets.find((target) => visible.has(target));
+          links.forEach((link) => {
+            const target = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+            link.classList.toggle('active', target !== null && target === first);
+          });
+        };
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) visible.add(entry.target);
+              else visible.delete(entry.target);
+            });
+            setActive();
+          },
+          { rootMargin: '-96px 0px -70% 0px' },
+        );
+        targets.forEach((target) => observer.observe(target));
+        setActive();
+      }
+    }
   </script>
 </BaseLayout>
-
-<style>
-  .back { color: #666; font-size: .95rem; text-decoration: none; }
-  .series-nav {
-    margin: 1rem 0 0;
-    padding: .55rem .85rem;
-    border: 1px solid #e5e5e5;
-    border-radius: 8px;
-    background: #fff;
-    color: #666;
-    font-size: .9rem;
-  }
-  .series-nav a { color: #222; font-weight: 600; }
-  .eyebrow { margin: 3rem 0 .5rem; color: #777; font-size: .82rem; letter-spacing: .06em; }
-  .updated { margin: 0; color: #999; font-size: .78rem; letter-spacing: .06em; }
-  h1 { margin: 0; font-size: clamp(2.5rem, 8vw, 4rem); }
-  .dek { max-width: 38rem; color: #666; font-size: 1.15rem; }
-  .tags {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: .4rem;
-    margin: 1.25rem 0 0;
-    padding: 0;
-  }
-  .tags a {
-    display: inline-block;
-    padding: .2rem .65rem;
-    border-radius: 999px;
-    background: #f0f0f0;
-    color: #444;
-    font-size: .9rem;
-    text-decoration: none;
-  }
-  .tags a:hover { background: #e4e4e4; }
-  .content { margin-top: 3rem; }
-
-  .content :global(.video-embed) {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    margin: 1.5rem 0 2rem;
-    border-radius: 12px;
-    overflow: hidden;
-    background: #111;
-  }
-  .content :global(.video-embed iframe) {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-  }
-
-  /* X / Twitter 内嵌：官方 widget 自带尺寸，不套 16:9 容器 */
-  .content :global(.video-embed-x) {
-    display: flex;
-    justify-content: center;
-    margin: 1.5rem 0 2rem;
-  }
-  .content :global(.video-embed-x .twitter-tweet) { margin-inline: auto; }
-
-  /* 自托管视频：<video controls> 原生播放，不依赖任何第三方 */
-  .content :global(.video-local) { margin: 1.5rem 0 2rem; }
-  .content :global(.video-local video) {
-    display: block;
-    width: 100%;
-    border-radius: 12px;
-    background: #111;
-  }
-
-  .content :global(.video-embed figcaption),
-  .content :global(.video-local figcaption) {
-    margin-top: .55rem;
-    color: #777;
-    font-size: .9rem;
-  }
-  .content :global(.video-fallback) {
-    display: block;
-    margin-top: .6rem;
-    color: #666;
-    font-size: .9rem;
-  }
-
-  .content :global(h2) { margin-top: 2.5rem; }
-  .content :global(p) { margin-block: 1.25rem; }
-</style>

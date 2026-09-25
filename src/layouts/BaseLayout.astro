@@ -1,4 +1,6 @@
 ---
+import '../styles/global.css';
+
 interface Props {
   title: string;
   description?: string;
@@ -11,6 +13,31 @@ const {
 
 const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
 const withBase = (path: string) => `${base}${path.replace(/^\/+/, '')}`;
+
+const nav = [
+  { href: withBase('/'), label: '文章', match: [base, `${base}posts`] },
+  { href: withBase('/series/'), label: '系列', match: [`${base}series`] },
+  { href: withBase('/tags/'), label: '标签', match: [`${base}tags`] },
+  { href: withBase('/search/'), label: '搜索', match: [`${base}search`] },
+  { href: withBase('/about/'), label: '关于', match: [`${base}about`] },
+];
+
+const normalize = (path: string) => path.replace(/\/+$/, '') || '/';
+const here = normalize(Astro.url.pathname);
+const isActive = (prefixes: string[]) =>
+  prefixes.some((prefix) => {
+    const value = normalize(prefix);
+    return value === '/' ? here === '/' : here === value || here.startsWith(`${value}/`);
+  });
+
+const today = new Intl.DateTimeFormat('zh-CN', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  timeZone: 'Asia/Shanghai',
+})
+  .format(new Date())
+  .replace(/\//g, '.');
 ---
 
 <!doctype html>
@@ -20,6 +47,18 @@ const withBase = (path: string) => `${base}${path.replace(/^\/+/, '')}`;
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
+    <script is:inline>
+      (() => {
+        try {
+          const stored = localStorage.getItem('chengshu-theme');
+          if (stored === 'light' || stored === 'dark') {
+            document.documentElement.dataset.theme = stored;
+          }
+        } catch (error) {
+          /* localStorage 不可用时保持跟随系统 */
+        }
+      })();
+    </script>
     <link
       rel="alternate"
       type="application/rss+xml"
@@ -42,101 +81,191 @@ const withBase = (path: string) => `${base}${path.replace(/^\/+/, '')}`;
     <title>{title}</title>
   </head>
   <body>
-    <header class="site-header">
-      <a class="brand" href={withBase('/')}>Chengshu</a>
-      <nav aria-label="主导航">
-        <a href={withBase('/')}>文章</a>
-        <a href={withBase('/series/')}>系列</a>
-        <a href={withBase('/tags/')}>标签</a>
-        <a href={withBase('/search/')}>搜索</a>
-        <a href={withBase('/about/')}>关于</a>
-      </nav>
+    <a class="skip-link" href="#main-content">跳到正文</a>
+
+    <header class="masthead">
+      <div class="wrap masthead-row">
+        <a class="mark" href={withBase('/')} aria-label="Chengshu 首页">
+          Chengshu<span class="dot" aria-hidden="true"></span>
+          <span class="handle">@skadai · {today}</span>
+        </a>
+
+        <nav class="primary" aria-label="主导航">
+          <ul>
+            {nav.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={isActive(item.match) ? 'page' : undefined}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div class="utility">
+          <button
+            type="button"
+            class="theme-toggle"
+            data-mode="auto"
+            aria-label="切换主题：跟随系统"
+            title="切换主题：跟随系统"
+          >
+            <svg class="icon icon-auto" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2" /><line x1="8" x2="16" y1="21" y2="21" /><line x1="12" x2="12" y1="17" y2="21" /></svg>
+            <svg class="icon icon-light" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" /></svg>
+            <svg class="icon icon-dark" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" /></svg>
+          </button>
+          <a class="btn-pill" href={withBase('/rss.xml')}>RSS</a>
+          <button
+            type="button"
+            class="hamburger"
+            aria-label="打开菜单"
+            aria-expanded="false"
+            aria-controls="mobile-nav"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
     </header>
 
-    <main>
+    <div class="mobile-nav-backdrop" data-mobile-backdrop hidden></div>
+    <aside id="mobile-nav" class="mobile-nav" data-open="false" aria-label="站点菜单">
+      <div class="mobile-nav-head">
+        <span class="mark">Chengshu<span class="dot" aria-hidden="true"></span></span>
+        <button type="button" class="mobile-nav-close" data-mobile-close aria-label="关闭菜单">×</button>
+      </div>
+      <ul class="mobile-nav-list">
+        {nav.map((item, index) => (
+          <li>
+            <a href={item.href} aria-current={isActive(item.match) ? 'page' : undefined}>
+              <span class="ch" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="mobile-nav-foot">
+        <span class="all-link">@skadai</span>
+        <a class="all-link" href={withBase('/rss.xml')}>RSS</a>
+      </div>
+    </aside>
+
+    <main id="main-content">
       <slot />
     </main>
 
-    <footer>
-      <p>
-        © {new Date().getFullYear()} Chengshu ·
-        <a href={withBase('/rss.xml')}>RSS</a> ·
-        <a href={withBase('/feed.json')}>JSON Feed</a>
-      </p>
+    <footer class="footer">
+      <div class="wrap">
+        <div class="footer-grid">
+          <div>
+            <div class="footer-mark">Chengshu<em>·</em></div>
+            <p class="footer-blurb">
+              现居深圳，做 agent 应用开发。这里记录技术笔记、课程讲义与日常观察。
+            </p>
+          </div>
+          <div>
+            <h4>阅读</h4>
+            <ul>
+              <li><a href={withBase('/')}>文章</a></li>
+              <li><a href={withBase('/series/')}>系列</a></li>
+              <li><a href={withBase('/tags/')}>标签</a></li>
+              <li><a href={withBase('/search/')}>搜索</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>订阅</h4>
+            <ul>
+              <li><a href={withBase('/rss.xml')}>RSS</a></li>
+              <li><a href={withBase('/feed.json')}>JSON Feed</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>关于</h4>
+            <ul>
+              <li><a href={withBase('/about/')}>关于我</a></li>
+              <li><a href="https://github.com/skadai" rel="me">GitHub</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© {new Date().getFullYear()} Chengshu</span>
+          <span>深圳 · 用 Astro 构建 · GitHub Pages 托管</span>
+        </div>
+      </div>
     </footer>
+
+    <script>
+      const root = document.documentElement;
+      const modes = ['auto', 'light', 'dark'] as const;
+      type Mode = (typeof modes)[number];
+
+      const labels: Record<Mode, string> = {
+        auto: '跟随系统',
+        light: '浅色',
+        dark: '深色',
+      };
+
+      const readMode = (): Mode => {
+        try {
+          const stored = localStorage.getItem('chengshu-theme');
+          if (stored === 'light' || stored === 'dark') return stored;
+        } catch (error) {
+          /* ignore */
+        }
+        return 'auto';
+      };
+
+      const applyMode = (mode: Mode) => {
+        if (mode === 'auto') root.removeAttribute('data-theme');
+        else root.dataset.theme = mode;
+
+        document.querySelectorAll<HTMLButtonElement>('.theme-toggle').forEach((button) => {
+          button.dataset.mode = mode;
+          const label = `切换主题：当前${labels[mode]}`;
+          button.setAttribute('aria-label', label);
+          button.setAttribute('title', label);
+        });
+      };
+
+      applyMode(readMode());
+
+      document.querySelectorAll<HTMLButtonElement>('.theme-toggle').forEach((button) => {
+        button.addEventListener('click', () => {
+          const next = modes[(modes.indexOf(readMode()) + 1) % modes.length];
+          try {
+            if (next === 'auto') localStorage.removeItem('chengshu-theme');
+            else localStorage.setItem('chengshu-theme', next);
+          } catch (error) {
+            /* ignore */
+          }
+          applyMode(next);
+        });
+      });
+
+      const mobileNav = document.querySelector<HTMLElement>('.mobile-nav');
+      const backdrop = document.querySelector<HTMLElement>('[data-mobile-backdrop]');
+      const openButton = document.querySelector<HTMLButtonElement>('.hamburger');
+      const closeButton = document.querySelector<HTMLButtonElement>('[data-mobile-close]');
+
+      const setMobileNav = (open: boolean) => {
+        if (!mobileNav || !backdrop || !openButton) return;
+        mobileNav.dataset.open = String(open);
+        backdrop.hidden = !open;
+        openButton.setAttribute('aria-expanded', String(open));
+        openButton.setAttribute('aria-label', open ? '关闭菜单' : '打开菜单');
+        if (open) closeButton?.focus();
+        else openButton.focus();
+      };
+
+      openButton?.addEventListener('click', () => setMobileNav(true));
+      closeButton?.addEventListener('click', () => setMobileNav(false));
+      backdrop?.addEventListener('click', () => setMobileNav(false));
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') setMobileNav(false);
+      });
+    </script>
   </body>
 </html>
-
-<style is:global>
-  :root {
-    color-scheme: light;
-    font-family: Inter, "PingFang SC", "Noto Sans CJK SC", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
-    color: #202020;
-    background: #fafafa;
-    font-synthesis: none;
-  }
-
-  * { box-sizing: border-box; }
-
-  body {
-    margin: 0;
-    min-height: 100vh;
-    line-height: 1.65;
-  }
-
-  a { color: inherit; }
-
-  .site-header,
-  main,
-  footer {
-    width: min(100% - 2rem, 720px);
-    margin-inline: auto;
-  }
-
-  .site-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-block: 1.5rem;
-    border-bottom: 1px solid #e5e5e5;
-  }
-
-  .brand {
-    letter-spacing: .02em;
-    font-size: 1.15rem;
-    font-weight: 700;
-    text-decoration: none;
-  }
-
-  nav { display: flex; gap: 1.25rem; }
-  nav a { color: #666; font-size: .95rem; text-decoration: none; }
-  nav a:hover { color: #111; }
-
-  main { padding-block: 4rem; }
-
-  h1, h2, h3 {
-    font-family: "Songti SC", "Noto Serif CJK SC", Georgia, serif;
-    line-height: 1.15;
-  }
-
-  h1 { font-size: clamp(2.5rem, 8vw, 4.75rem); letter-spacing: -.04em; }
-  h2 { font-size: 1.55rem; }
-
-  footer {
-    padding-block: 2rem;
-    border-top: 1px solid #e5e5e5;
-    color: #777;
-    font-size: .9rem;
-  }
-
-  img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 6px;
-  }
-
-  @media (max-width: 520px) {
-    .site-header { align-items: flex-start; }
-    main { padding-block: 2.75rem; }
-  }
-</style>

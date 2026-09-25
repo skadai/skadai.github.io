@@ -32,6 +32,20 @@ npm run dev
 
 首页和文章路由只会读取 `draft: false` 的内容；标记为 `draft: true` 的草稿不会出现在列表中，也不会生成公开页面。
 
+## 样式与主题
+
+全站样式集中在 `src/styles/global.css`，由 `BaseLayout.astro` 引入：
+
+- **设计令牌**：色彩用 oklch 定义在 `:root`（`--paper` / `--ink` / `--accent` 等），深色主题在
+  `[data-theme="dark"]` 与 `prefers-color-scheme: dark` 下覆盖同一组变量。
+- **字体分工**：标题与正文用衬线（`--serif`，拉丁字母走 Newsreader/Georgia，CJK 回落到系统无衬线），
+  界面用 `--sans`，元信息（日期、字数、面包屑、代码）用 `--mono`；不加载外部字体。
+- **主题切换**：页头右侧按钮在「跟随系统 → 浅色 → 深色」之间循环，选择存在
+  `localStorage` 的 `chengshu-theme` 键；`<head>` 里有一段内联脚本在首屏渲染前套用，避免闪烁。
+- **文章页**：自动生成「本篇目录」（取 `h2`），桌面端为右侧吸附栏，窄屏折叠到正文上方；
+  滚动时高亮当前小节。
+- **代码高亮**：`astro.config.mjs` 里 Shiki 同时产出 light / dark 两套 token 颜色，由 CSS 决定用哪一套。
+
 ## 搜索与订阅
 
 - 站内搜索：`/search/`，按文章标题（大小写不敏感、支持中文子串）过滤，数据来自构建产物 `posts.json`；可用 `?q=关键词` 直接分享结果链接。
@@ -39,7 +53,7 @@ npm run dev
 
 ## 内嵌视频
 
-正文支持三种视频内嵌方式，样式都在 `src/layouts/PostLayout.astro`。
+正文支持三种视频内嵌方式，样式在 `src/styles/global.css`。
 
 **1. YouTube / Bilibili（iframe）** —— 16:9 自适应容器：
 

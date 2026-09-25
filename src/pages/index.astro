@@ -15,112 +15,64 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat('zh-CN', {
 ---
 
 <BaseLayout title="Chengshu" description="关于设计、技术与日常观察的个人笔记。">
-  <section class="hero">
-    <p class="eyebrow">个人写作</p>
-    <h1>认真生活，<br />缓慢记录。</h1>
-    <p class="intro">关于设计、技术，以及日常里值得被记住的小事。</p>
-  </section>
+  <div class="wrap">
+    <section class="home-hero">
+      <p class="rubric">
+        <span>个人写作</span>
+        <span class="sep" aria-hidden="true"></span>
+        <span>深圳</span>
+        <span class="sep" aria-hidden="true"></span>
+        <span>Agent 应用开发</span>
+      </p>
+      <h1>认真生活，<br />缓慢记录。</h1>
+      <p class="intro">关于设计、技术，以及日常里值得被记住的小事。</p>
+    </section>
 
-  <section aria-labelledby="series" class="series">
-    <div class="section-head">
-      <h2 id="series">系列文章</h2>
-      <a class="all-tags" href={seriesIndexPath(base)}>全部系列 →</a>
-    </div>
-    <ul class="series-list">
-      {series.map(({ series: entry, href, chapters, publishedCount }) => (
-        <li>
-          <a href={href}>
-            <span class="series-title">{entry.title}</span>
-            <span class="series-tagline">{entry.tagline}</span>
-            <span class="series-meta">{publishedCount} 篇 · 从第一篇进入 →</span>
-            {chapters[0] && <span class="series-start">起点：{chapters[0].title}</span>}
-          </a>
-        </li>
-      ))}
-    </ul>
-  </section>
+    <section class="home-section" aria-labelledby="series">
+      <div class="section-head">
+        <h2 id="series">系列文章</h2>
+        <a class="more" href={seriesIndexPath(base)}>全部系列 →</a>
+      </div>
+      <ul class="almanac">
+        {series.map(({ series: entry, href, chapters, publishedCount }) => (
+          <li class="row">
+            <span class="date">{publishedCount} 篇</span>
+            <span class="body">
+              <a class="article-title" href={href}>{entry.title}</a>
+              <span class="dek">{entry.tagline}</span>
+            </span>
+            <span class="arrow" aria-hidden="true">→</span>
+          </li>
+        ))}
+      </ul>
+    </section>
 
-  <section aria-labelledby="latest">
-    <div class="section-head">
-      <h2 id="latest">最近文章</h2>
-      <a class="all-tags" href={`${base}tags/`}>全部标签 →</a>
-    </div>
-    <div class="post-list">
-      {posts.map((post) => (
-        <article>
-          <p class="date">
-            <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
-          </p>
-          <h3><a href={postPath(post, base)}>{post.data.title}</a></h3>
-          {post.data.description && <p>{post.data.description}</p>}
-          {(post.data.tags?.length ?? 0) > 0 && (
-            <ul class="tags">
-              {post.data.tags!.map((tag) => (
-                <li><a href={tagPath(tag, base)}>{tag}</a></li>
-              ))}
-            </ul>
-          )}
-          <a class="read-more" href={postPath(post, base)}>阅读全文 →</a>
-        </article>
-      ))}
-    </div>
-  </section>
+    <section class="home-section" aria-labelledby="latest">
+      <div class="section-head">
+        <h2 id="latest">最近文章</h2>
+        <a class="more" href={`${base}tags/`}>全部标签 →</a>
+      </div>
+      <ul class="almanac">
+        {posts.map((post) => (
+          <li class="row">
+            <time class="date" datetime={post.data.pubDate.toISOString()}>
+              {formatDate(post.data.pubDate)}
+            </time>
+            <span class="body">
+              <a class="article-title" href={postPath(post, base)}>{post.data.title}</a>
+              {post.data.description && <span class="dek">{post.data.description}</span>}
+              {(post.data.tags?.length ?? 0) > 0 && (
+                <span class="tags">
+                  {post.data.tags!.map((tag) => (
+                    <a href={tagPath(tag, base)}>{tag}</a>
+                  ))}
+                </span>
+              )}
+            </span>
+            <span class="arrow" aria-hidden="true">→</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </div>
 </BaseLayout>
-
-<style>
-  .hero { padding-bottom: 4rem; }
-  .eyebrow, .date { color: #777; font-size: .82rem; letter-spacing: .06em; }
-  h1 { margin: .75rem 0 1.25rem; }
-  .intro { max-width: 36rem; color: #666; font-size: 1.2rem; }
-  .section-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
-    padding-bottom: .75rem;
-    border-bottom: 1px solid #e5e5e5;
-  }
-  .section-head h2 { margin: 0; }
-  .all-tags { color: #666; font-size: .95rem; text-decoration: none; white-space: nowrap; }
-  .all-tags:hover { color: #111; }
-  article { padding-block: 1.75rem; }
-  .series { padding-bottom: 2rem; }
-  .series-list { list-style: none; margin: 1.25rem 0 0; padding: 0; display: grid; gap: .85rem; }
-  .series-list a {
-    display: grid;
-    gap: .2rem;
-    padding: 1rem 1.15rem;
-    border: 1px solid #e5e5e5;
-    border-radius: 10px;
-    background: #fff;
-    text-decoration: none;
-  }
-  .series-list a:hover { border-color: #bbb; }
-  .series-title { font-weight: 700; }
-  .series-tagline { color: #666; font-size: .92rem; }
-  .series-meta { color: #888; font-size: .82rem; }
-  .series-start { color: #999; font-size: .82rem; }
-  article h3 { margin: .25rem 0 .5rem; font-size: 1.75rem; }
-  article h3 a { text-decoration: none; }
-  article h3 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
-  article p { max-width: 38rem; }
-  .tags {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: .4rem;
-    margin: .75rem 0 0;
-    padding: 0;
-  }
-  .tags a {
-    display: inline-block;
-    padding: .15rem .55rem;
-    border-radius: 999px;
-    background: #f0f0f0;
-    color: #444;
-    font-size: .85rem;
-    text-decoration: none;
-  }
-  .tags a:hover { background: #e4e4e4; }
-  .read-more { display: inline-block; margin-top: .5rem; color: #333; font-weight: 700; text-decoration: none; }
-</style>

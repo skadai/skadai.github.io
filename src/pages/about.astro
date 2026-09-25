@@ -1,13 +1,21 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
 ---
 
 <BaseLayout title="关于 · Chengshu" description="现居深圳，agent应用开发。">
-  <p class="eyebrow">关于</p>
-  <h1>现居深圳，<br />agent应用开发</h1>
+  <div class="wrap">
+    <section class="page-head">
+      <nav class="breadcrumb" aria-label="面包屑">
+        <span><a href={base}>Chengshu</a><span class="sep">/</span></span>
+        <span>关于</span>
+      </nav>
+      <h1>现居深圳，<br />agent 应用开发</h1>
+      <p class="intro">
+        这里放技术笔记、课程讲义和日常观察。用 Astro 构建，静态托管在 GitHub Pages；
+        订阅可以走 <a href={`${base}rss.xml`}>RSS</a> 或 <a href={`${base}feed.json`}>JSON Feed</a>。
+      </p>
+    </section>
+  </div>
 </BaseLayout>
-
-<style>
-  .eyebrow { color: #777; font-size: .82rem; letter-spacing: .06em; }
-  h1 { max-width: 40rem; margin: .75rem 0 2rem; }
-</style>

@@ -9,80 +9,47 @@ const series = getSeries().map((entry) => resolveSeries(entry, posts, base));
 ---
 
 <BaseLayout title="系列 · Chengshu" description="按系列连续阅读：DeepSeek 部署术语课与 Stanford CS336 精读。">
-  <section class="hero">
-    <p class="eyebrow">系列文章</p>
-    <h1>成体系的阅读路径</h1>
-    <p class="intro">
-      把同一主题下的文章按顺序串起来，从第一篇进入即可一路读到底。
-    </p>
-  </section>
+  <div class="wrap">
+    <section class="page-head">
+      <nav class="breadcrumb" aria-label="面包屑">
+        <span><a href={base}>Chengshu</a><span class="sep">/</span></span>
+        <span>系列</span>
+      </nav>
+      <h1>成体系的阅读路径</h1>
+      <p class="intro">把同一主题下的文章按顺序串起来，从第一篇进入即可一路读到底。</p>
+    </section>
 
-  <ul class="series-list">
-    {series.map(({ series: entry, chapters, href, publishedCount }) => (
-      <li>
-        <article>
-          {entry.cover && (
-            <a class="cover" href={href} aria-hidden="true" tabindex="-1">
-              <img src={entry.cover} alt={entry.coverAlt ?? entry.title} loading="lazy" />
-            </a>
-          )}
-          <div class="body">
-            <h2><a href={href}>{entry.title}</a></h2>
-            <p class="tagline">{entry.tagline}</p>
-            <p class="desc">{entry.description}</p>
-            <p class="meta">
-              <span class="count">已更新 {publishedCount} 篇</span>
-              {entry.upcoming && entry.upcoming.length > 0 && (
-                <span class="count muted">计划中 {entry.upcoming.length} 篇</span>
-              )}
-              {entry.tags && entry.tags.length > 0 && (
-                <span class="tags">
-                  {entry.tags.map((tag) => (
-                    <a href={tagPath(tag, base)}>{tag}</a>
-                  ))}
-                </span>
-              )}
-            </p>
-            <a class="enter" href={href}>进入系列 →</a>
-          </div>
-        </article>
-      </li>
-    ))}
-  </ul>
+    <ul class="series-list">
+      {series.map(({ series: entry, chapters, href, publishedCount }) => (
+        <li>
+          <article>
+            {entry.cover && (
+              <a class="cover" href={href} aria-hidden="true" tabindex="-1">
+                <img src={entry.cover} alt={entry.coverAlt ?? entry.title} loading="lazy" />
+              </a>
+            )}
+            <div class="body">
+              <h2><a href={href}>{entry.title}</a></h2>
+              <p class="tagline">{entry.tagline}</p>
+              <p class="desc">{entry.description}</p>
+              <p class="meta">
+                <span class="count">已更新 {publishedCount} 篇</span>
+                {entry.upcoming && entry.upcoming.length > 0 && (
+                  <span class="count muted">计划中 {entry.upcoming.length} 篇</span>
+                )}
+                {entry.tags && entry.tags.length > 0 && (
+                  <span class="tags">
+                    {entry.tags.map((tag) => (
+                      <a href={tagPath(tag, base)}>{tag}</a>
+                    ))}
+                  </span>
+                )}
+              </p>
+              <a class="enter" href={href}>进入系列 →</a>
+            </div>
+          </article>
+        </li>
+      ))}
+    </ul>
+  </div>
 </BaseLayout>
-
-<style>
-  .hero { padding-bottom: 2.5rem; }
-  .eyebrow { color: #777; font-size: .82rem; letter-spacing: .06em; }
-  h1 { margin: .75rem 0 1rem; }
-  .intro { max-width: 36rem; color: #666; font-size: 1.05rem; }
-  .series-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.5rem; }
-  .series-list article {
-    border: 1px solid #e5e5e5;
-    border-radius: 12px;
-    background: #fff;
-    overflow: hidden;
-  }
-  .cover { display: block; }
-  .cover img { display: block; width: 100%; border-radius: 0; aspect-ratio: 16 / 9; object-fit: cover; }
-  .body { padding: 1.25rem 1.35rem 1.5rem; }
-  h2 { margin: 0 0 .35rem; font-size: 1.5rem; }
-  h2 a { text-decoration: none; }
-  h2 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
-  .tagline { margin: 0 0 .75rem; color: #555; }
-  .desc { margin: 0 0 1rem; color: #666; font-size: .95rem; }
-  .meta { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin: 0 0 1rem; }
-  .count {
-    padding: .15rem .6rem;
-    border-radius: 999px;
-    background: #f0f0f0;
-    color: #444;
-    font-size: .82rem;
-  }
-  .count.muted { background: #f7f7f7; color: #888; }
-  .tags { display: inline-flex; flex-wrap: wrap; gap: .4rem; }
-  .tags a { color: #777; font-size: .82rem; text-decoration: none; }
-  .tags a:hover { color: #111; text-decoration: underline; }
-  .enter { font-weight: 700; text-decoration: none; }
-  .enter:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
-</style>
