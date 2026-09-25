@@ -14,9 +14,14 @@ interface Frontmatter {
 
 interface Props {
   frontmatter: Frontmatter;
+  series?: {
+    title: string;
+    label: string;
+    href: string;
+  };
 }
 
-const { frontmatter } = Astro.props as Props;
+const { frontmatter, series } = Astro.props as Props;
 const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
 const tags = (frontmatter.tags ?? []).map((t) => t.trim()).filter(Boolean);
 
@@ -58,6 +63,11 @@ if (tags.length) jsonLd.keywords = tags.join(', ');
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <article class="post">
     <a class="back" href={base}>← 返回文章</a>
+    {series && (
+      <p class="series-nav">
+        本篇属于系列 <a href={series.href}>{series.title}</a> · {series.label}
+      </p>
+    )}
     <header>
       <p class="eyebrow">
         {isoPublished ? (
@@ -94,6 +104,16 @@ if (tags.length) jsonLd.keywords = tags.join(', ');
 
 <style>
   .back { color: #666; font-size: .95rem; text-decoration: none; }
+  .series-nav {
+    margin: 1rem 0 0;
+    padding: .55rem .85rem;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    background: #fff;
+    color: #666;
+    font-size: .9rem;
+  }
+  .series-nav a { color: #222; font-weight: 600; }
   .eyebrow { margin: 3rem 0 .5rem; color: #777; font-size: .82rem; letter-spacing: .06em; }
   h1 { margin: 0; font-size: clamp(2.5rem, 8vw, 4rem); }
   .dek { max-width: 38rem; color: #666; font-size: 1.15rem; }

@@ -1,9 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getPublishedPosts, postPath, tagPath } from '../lib/posts';
+import { getSeries, resolveSeries, seriesIndexPath } from '../lib/series';
 
 const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
 const posts = await getPublishedPosts();
+const series = getSeries().map((entry) => resolveSeries(entry, posts, base));
 
 const formatDate = (date: Date) => new Intl.DateTimeFormat('zh-CN', {
   year: 'numeric',
@@ -17,6 +19,25 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat('zh-CN', {
     <p class="eyebrow">个人写作</p>
     <h1>认真生活，<br />缓慢记录。</h1>
     <p class="intro">关于设计、技术，以及日常里值得被记住的小事。</p>
+  </section>
+
+  <section aria-labelledby="series" class="series">
+    <div class="section-head">
+      <h2 id="series">系列文章</h2>
+      <a class="all-tags" href={seriesIndexPath(base)}>全部系列 →</a>
+    </div>
+    <ul class="series-list">
+      {series.map(({ series: entry, href, chapters, publishedCount }) => (
+        <li>
+          <a href={href}>
+            <span class="series-title">{entry.title}</span>
+            <span class="series-tagline">{entry.tagline}</span>
+            <span class="series-meta">{publishedCount} 篇 · 从第一篇进入 →</span>
+            {chapters[0] && <span class="series-start">起点：{chapters[0].title}</span>}
+          </a>
+        </li>
+      ))}
+    </ul>
   </section>
 
   <section aria-labelledby="latest">
@@ -63,6 +84,22 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat('zh-CN', {
   .all-tags { color: #666; font-size: .95rem; text-decoration: none; white-space: nowrap; }
   .all-tags:hover { color: #111; }
   article { padding-block: 1.75rem; }
+  .series { padding-bottom: 2rem; }
+  .series-list { list-style: none; margin: 1.25rem 0 0; padding: 0; display: grid; gap: .85rem; }
+  .series-list a {
+    display: grid;
+    gap: .2rem;
+    padding: 1rem 1.15rem;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    background: #fff;
+    text-decoration: none;
+  }
+  .series-list a:hover { border-color: #bbb; }
+  .series-title { font-weight: 700; }
+  .series-tagline { color: #666; font-size: .92rem; }
+  .series-meta { color: #888; font-size: .82rem; }
+  .series-start { color: #999; font-size: .82rem; }
   article h3 { margin: .25rem 0 .5rem; font-size: 1.75rem; }
   article h3 a { text-decoration: none; }
   article h3 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }

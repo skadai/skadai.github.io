@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublishedPosts, tagPath } from '../../lib/posts';
+import { getSeries, resolveSeries, type ResolvedSeries } from '../../lib/series';
+
+export async function getStaticPaths() {
+  return getSeries().map((series) => ({
+    params: { slug: series.id },
+    props: { series },
+  }));
+}
+
+interface Props {
+  series: ResolvedSeries['series'];
+}
+
+const { series } = Astro.props;
+const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
+const posts = await getPublishedPosts();
+const resolved = resolveSeries(series, posts, base);
+
+const formatDate = (date: Date) => new Intl.DateTimeFormat('zh-CN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(date);
+---
+
+<BaseLayout title={`${series.title} · 系列 · Chengshu`} description={series.description}>
+  <nav class="crumbs" aria-label="面包屑">
+    <a href={`${base}series/`}>← 全部系列</a>
+  </nav>
+
+  <section class="hero">
+    <p class="eyebrow">系列</p>
+    <h1>{series.title}</h1>
+    <p class="tagline">{series.tagline}</p>
+    <p class="intro">{series.description}</p>
+    {series.tags && series.tags.length > 0 && (
+      <ul class="tags">
+        {series.tags.map((tag) => (
+          <li><a href={tagPath(tag, base)}>{tag}</a></li>
+        ))}
+      </ul>
+    )}
+  </section>
+
+  {series.cover && (
+    <figure class="cover">
+      <img src={series.cover} alt={series.coverAlt ?? series.title} />
+    </figure>
+  )}
+
+  <section aria-labelledby="chapters">
+    <div class="section-head">
+      <h2 id="chapters">目录</h2>
+      <span class="progress">已更新 {resolved.publishedCount} 篇</span>
+    </div>
+    <ol class="chapters">
+      {resolved.chapters.map((chapter) => (
+        <li>
+          <a href={chapter.href}>
+            <span class="label">{chapter.label}</span>
+            <span class="title">{chapter.title}</span>
+            <span class="date"><time datetime={chapter.pubDate.toISOString()}>{formatDate(chapter.pubDate)}</time></span>
+          </a>
+        </li>
+      ))}
+      {series.upcoming?.map((chapter) => (
+        <li class="upcoming">
+          <span class="label">{chapter.label}</span>
+          <span class="title">{chapter.title}</span>
+          <span class="date">待更新</span>
+        </li>
+      ))}
+    </ol>
+  </section>
+</BaseLayout>
+
+<style>
+  .crumbs { padding-bottom: 1.5rem; }
+  .crumbs a { color: #666; font-size: .95rem; text-decoration: none; }
+  .crumbs a:hover { color: #111; }
+  .hero { padding-bottom: 2rem; }
+  .eyebrow { color: #777; font-size: .82rem; letter-spacing: .06em; }
+  h1 { margin: .75rem 0 .75rem; font-size: clamp(2.25rem, 6vw, 3.25rem); }
+  .tagline { margin: 0 0 .75rem; color: #555; font-size: 1.1rem; }
+  .intro { max-width: 38rem; color: #666; }
+  .tags { list-style: none; display: flex; flex-wrap: wrap; gap: .4rem; margin: 1rem 0 0; padding: 0; }
+  .tags a {
+    display: inline-block;
+    padding: .15rem .6rem;
+    border-radius: 999px;
+    background: #f0f0f0;
+    color: #444;
+    font-size: .85rem;
+    text-decoration: none;
+  }
+  .tags a:hover { background: #e4e4e4; }
+  .cover { margin: 0 0 2.5rem; }
+  .cover img { display: block; width: 100%; }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: .75rem;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  .section-head h2 { margin: 0; }
+  .progress { color: #777; font-size: .9rem; }
+  .chapters { list-style: none; margin: 0; padding: 0; counter-reset: chapter; }
+  .chapters li { border-bottom: 1px solid #f0f0f0; }
+  .chapters li > a {
+    display: grid;
+    grid-template-columns: 5.5rem 1fr auto;
+    gap: .75rem;
+    align-items: baseline;
+    padding: .95rem .25rem;
+    text-decoration: none;
+  }
+  .chapters li.upcoming {
+    display: grid;
+    grid-template-columns: 5.5rem 1fr auto;
+    gap: .75rem;
+    align-items: baseline;
+    padding: .95rem .25rem;
+    color: #999;
+  }
+  .label { color: #888; font-size: .85rem; }
+  .title { font-weight: 600; }
+  .chapters li > a:hover .title { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+  .date { color: #888; font-size: .82rem; white-space: nowrap; }
+  .chapters li.upcoming .title { font-weight: 500; }
+  @media (max-width: 520px) {
+    .chapters li > a, .chapters li.upcoming { grid-template-columns: 1fr; gap: .2rem; }
+    .date { font-size: .78rem; }
+  }
+</style>
