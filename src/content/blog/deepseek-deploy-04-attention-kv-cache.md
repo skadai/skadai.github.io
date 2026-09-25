@@ -147,6 +147,7 @@ LLM 服务不是"输入一段、输出一段"的黑盒，它内部是两个性�
    但每层 128 token 的滑窗、以及高并发下的乘法效应，仍然要计入。
 
 下一篇：[《两级稀疏注意力：滑窗、压缩 KV latent 与 indexer》](/posts/deepseek-deploy-05-sparse-attention/)——我们钻进"为什么 KV 能这么小"的核心，
+看看 1M 个 token 是怎么做到每个 token 不用互相看一遍的。
 
 ---
 

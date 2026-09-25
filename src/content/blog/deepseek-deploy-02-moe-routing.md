@@ -122,6 +122,7 @@ V4.1 用的是 `sqrtsoftplus` 作为打分函数，并带一个 `noaux_tc` 偏�
 3. **路由是学出来的、带均衡偏置的，而且图像和文本各有一套**——所以它既强大又难以完全预测。
 
 下一篇：[《模型也会看图：ViT、aligner、图像 token 与 Encoder parallel》](/posts/deepseek-deploy-03-vision-path/)——我们去看这台模型为什么"视觉-语言"，
+以及那 32 层 ViT 是怎么把一张图塞进文本序列里的。
 
 ---
 

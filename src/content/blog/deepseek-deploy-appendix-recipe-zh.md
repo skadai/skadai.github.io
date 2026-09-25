@@ -349,4 +349,4 @@ vLLM commit `d1b4028d7e`、Python frontend、`--enforce-eager`、`--max-model-le
 
 **系列目录**：[《关于deepseek部署你要知道的一切》](/series/deepseek-deploy/)
 
-上一篇：[《两级稀疏注意力：滑窗、压缩 KV latent 与 indexer》](/posts/deepseek-deploy-05-sparse-attention/)
+上一篇：[《上手篇：把 V4.1-Flash 跑起来》](/posts/deepseek-deploy-13-hands-on/)
